@@ -1,0 +1,16 @@
+{
+  "requirements": [
+    {
+      "name": "flask",
+      "version": "release"
+    },
+    {
+      "name": "pymongo",
+      "version": "release"
+    },
+    {
+      "name": "pyjwt",
+      "version": "release"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+
+    "APPVERSION": "APP_Dev:0.0.1",
+    "WEBUI":"inspinia:2.9.2",
+    "?HOST":"0.0.0.0所有网络，127.0.0.1本地网络",
+    "HOST": "0.0.0.0",
+    "PORT": "9999",
+    "SUPERTOKEN":"",
+    "DB": {
+        "HOST": "127.0.0.1",
+        "PORT": 27019,
+        "DBNAME":"general-server-assistant",
+        "USER": "root",
+        "PWD": "general-server-assistant"
+    },
+    "?DEBUG": "框架调试",
+    "DEBUG": true,
+    "?LOGGING":"日志记录",
+    "LOGGING":true,
+    "SHA1_SECRET_KEY": "general-server-assistant",
+    "JWT_SECRET_KEY": "general-server-assistant",
+    "ADMIN" :  {
+            "name": "admin",
+            "password": "admin",
+            "email": ""
+        }
+}
