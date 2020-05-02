@@ -5,8 +5,9 @@ from app.core.model.request_model import RequestModel
 from app.core.model.respond_model import RespondModel
 from app.core.service import user_service
 from app.tools.jwt_tools import generate_jwt, decode_jwt
+from app.core.service.plugin_service import get_all_plugin_name
 
-api = Blueprint('service', __name__)
+api = Blueprint('user_api', __name__)
 
 
 @api.route('/login', methods=['post'])
@@ -49,6 +50,8 @@ def user_info():
     user_info_jwt = decode_jwt(jwt)['user_info']
     respond_model = RespondModel()
     respond_model.message = 'success'
+    if 'admin' in user_info_jwt.get('roles'):
+        user_info_jwt['roles'] = 'admin,' + get_all_plugin_name()
     respond_model.data = user_info_jwt
     return respond_model
 
