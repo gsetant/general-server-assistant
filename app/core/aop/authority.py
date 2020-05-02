@@ -48,3 +48,12 @@ class authorization(object):
                 return respond_model
 
         return fun_dec
+
+
+def plugin_authorization(plugin_name):
+    request_model = RequestModel(request)
+    roles = decode_jwt(request_model.token)['user_info'].get('roles')
+    if plugin_name in roles:
+        return True
+    else:
+        return False
