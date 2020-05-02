@@ -5,6 +5,10 @@
       "version": "release"
     },
     {
+      "name": "flask-cors",
+      "version": "release"
+    },
+    {
       "name": "pymongo",
       "version": "release"
     },

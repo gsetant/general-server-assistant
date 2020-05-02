@@ -4,24 +4,24 @@ from flask import Response
 
 
 class RespondModel:
-    jwt = ''
+    token = ''
     data = {}
     message = ''
-    state = ''
+    code = ''
     headers = {}
 
     def __init__(self):
-        self.jwt = ''
+        self.token = ''
         self.data = {}
         self.message = ''
-        self.state = ''
+        self.code = ''
 
     def dump_json(self):
-        if self.data is None or self.message is None:
+        if self.data is None or self.message is None or self.code is None:
             raise Exception('respond incomplete')
 
-        self.headers['Authorization'] = self.jwt
+        self.headers['Authorization'] = self.token
         self.headers['Access-Control-Expose-Headers'] = 'Authorization'
 
-        self.__dict__.pop('jwt')
+        self.__dict__.pop('token')
         return Response(json.dumps(self.__dict__), mimetype='application/json', headers=self.headers)

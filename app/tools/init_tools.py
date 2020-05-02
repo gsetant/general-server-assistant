@@ -52,8 +52,7 @@ def init_data():
     if collection.find_one({"role": "admin"}) is None:
         admin_user = app_config["ADMIN"]
         admin_user["password"] = sha1_encode(admin_user["name"] + admin_user["password"])
-        admin_user["role"] = "admin"
-        admin_user["authority"] = "admin"
+        admin_user["roles"] = "admin"
         collection.insert(admin_user)
 
 
