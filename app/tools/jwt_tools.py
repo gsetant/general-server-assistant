@@ -27,7 +27,7 @@ def generate_jwt(user_info):
 def renew_jwt(token):
     data = decode_jwt(token)
     if data:
-        user_info = ['user_info']
+        user_info = data['user_info']
         return generate_jwt(user_info)
     return ''
 

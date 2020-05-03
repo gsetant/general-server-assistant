@@ -13,7 +13,6 @@ api = Blueprint('user_api', __name__)
 @api.route('/login', methods=['post'])
 def login():
     request_model = RequestModel(request)
-
     user_info = user_service.login(request_model.data.get('user_info'))
     respond_model = RespondModel()
     if user_info is not None:

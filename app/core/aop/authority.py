@@ -4,6 +4,7 @@ from flask import request
 
 from app.core.model.request_model import RequestModel
 from app.core.model.respond_model import RespondModel
+from app.core.service.plugin_service import get_all_plugin_name
 from app.tools.jwt_tools import renew_jwt, verify_jwt, decode_jwt
 
 
@@ -13,7 +14,7 @@ def authentication(api_function):
         request_model = RequestModel(request)
         if request_model.token and verify_jwt(request_model.token):
             respond_model = api_function(*args, **kwargs)
-            respond_model.token = renew_jwt(respond_model.token)
+            respond_model.token = renew_jwt(request_model.token)
             if respond_model.message == 'authorization error':
                 respond_model.code = 50012
                 return respond_model.dump_json(), 401
@@ -53,6 +54,8 @@ class authorization(object):
 def plugin_authorization(plugin_name):
     request_model = RequestModel(request)
     roles = decode_jwt(request_model.token)['user_info'].get('roles')
+    if 'admin' in roles:
+        roles = 'admin,' + get_all_plugin_name()
     if plugin_name in roles:
         return True
     else:

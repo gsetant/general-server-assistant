@@ -49,7 +49,7 @@ def init_database():
 
 def init_data():
     collection = get_collection('user')
-    if collection.find_one({"role": "admin"}) is None:
+    if collection.find_one({"name": "admin"}) is None:
         admin_user = app_config["ADMIN"]
         admin_user["password"] = sha1_encode(admin_user["name"] + admin_user["password"])
         admin_user["roles"] = "admin"
