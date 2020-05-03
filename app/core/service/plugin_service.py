@@ -24,7 +24,7 @@ def get_plugin_setting(plugin_name, lang):
 
 
 def get_plugin_infos(plugin_names, lang):
-    plugin_infos =[]
+    plugin_infos = []
     plugin_names = plugin_names.split(',')
     plugin_names_have = get_all_plugin_name()
     for plugin_name in plugin_names:

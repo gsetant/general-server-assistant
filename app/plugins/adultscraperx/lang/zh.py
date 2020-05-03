@@ -1,4 +1,4 @@
 text = {
-    'name': 'adultcraperx',
-    'tittle': 'AdultCraperX'
+    'name': 'adultscraperx',
+    'tittle': 'AdultScraperX'
 }
