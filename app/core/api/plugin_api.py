@@ -11,6 +11,7 @@ api = Blueprint('plugin_api', __name__)
 @authentication
 def plugin_infos():
     plugin_names = request.args.get("pluginNames")
+    lang = request.args.get("lang")
     respond_model = RespondModel()
-    respond_model.data = get_plugin_infos(plugin_names)
+    respond_model.data = get_plugin_infos(plugin_names, lang)
     return respond_model
