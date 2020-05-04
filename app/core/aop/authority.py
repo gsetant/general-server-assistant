@@ -19,6 +19,7 @@ def authentication(api_function):
                 respond_model.code = 50012
                 return respond_model.dump_json(), 401
             respond_model.code = 20000
+            respond_model.message = 'success'
             return respond_model.dump_json(), 200
         else:
             respond_model = RespondModel()
