@@ -23,7 +23,7 @@ def authentication(api_function):
             respond_model.token = renew_jwt(request_model.token)
             if respond_model.message == 'authorization error':
                 respond_model.code = 50012
-                return respond_model.dump_json(), 401
+                return respond_model.dump_json(), 403
             respond_model.code = 20000
             respond_model.message = 'success'
             return respond_model.dump_json(), 200
