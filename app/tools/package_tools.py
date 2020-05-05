@@ -3,12 +3,13 @@ import os
 
 def install_package(package_name, version):
     """
-        安装需要的包
-    :param package_name: 包名
-    :param version: 版本（空, None, release 则安装最新版本）
+        using pip to install python package
+    :param package_name: str package name
+    :param version: version
     :return:
     """
-
+    if not package_name:
+        return
     try:
         os_result = os.popen('pip3 show --files %s' % package_name).read()
         if not os_result.find('Version') > -1:
@@ -32,8 +33,8 @@ def install_package(package_name, version):
 
 def get_package_info(package_name):
     """
-        获取已安装的包版本
-    :param package_name: 包名称
-    :return: 包版本号
+        get installed package information
+    :param package_name: str package name
+    :return: version
     """
     return os.popen('pip3 show --files %s' % package_name).read().split('\n')[1].split(' ')[1]

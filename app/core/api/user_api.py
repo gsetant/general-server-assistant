@@ -12,6 +12,10 @@ api = Blueprint('user_api', __name__)
 
 @api.route('/login', methods=['post'])
 def login():
+    """
+        user login
+    :return: respond model with jwt token in headers
+    """
     request_model = RequestModel(request)
     user_info = user_service.login(request_model.data.get('user_info'))
     respond_model = RespondModel()
@@ -27,6 +31,10 @@ def login():
 @api.route('/user', methods=['post'])
 @authentication
 def user():
+    """
+        update user info
+    :return: respond model
+    """
     request_model = RequestModel(request)
     user_info_form = request_model.data.get('user_info')
     jwt = request_model.token
@@ -44,6 +52,10 @@ def user():
 @api.route('/user/info', methods=['get'])
 @authentication
 def user_info():
+    """
+        get user info
+    :return: respond model
+    """
     request_model = RequestModel(request)
     jwt = request_model.token
     user_info_jwt = decode_jwt(jwt)['user_info']
@@ -57,6 +69,10 @@ def user_info():
 
 @api.route('/user/logout', methods=['get'])
 def user_logout():
+    """
+        logout
+    :return: respond model
+    """
     respond_model = RespondModel()
     respond_model.message = 'success'
     respond_model.token = ''

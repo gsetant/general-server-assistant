@@ -9,6 +9,10 @@ APP_CONF = get_config(APP_CONFIG)
 
 
 def get_connection():
+    """
+        get mongo connection
+    :return: mongo connection
+    """
     global connection
     if connection is None:
         connection = pymongo.MongoClient(host=APP_CONF['DB']['HOST'],
@@ -19,6 +23,10 @@ def get_connection():
 
 
 def get_database():
+    """
+        get mongo database object
+    :return: mongo database object
+    """
     global database
     if database is None:
         database = get_connection()[APP_CONF['DB']['DBNAME']]
@@ -27,4 +35,9 @@ def get_database():
 
 
 def get_collection(collection):
+    """
+        get mongo collection object
+    :param collection: collection name
+    :return: mongo collection object
+    """
     return get_database()[collection]

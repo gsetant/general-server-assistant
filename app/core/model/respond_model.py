@@ -4,6 +4,10 @@ from flask import Response
 
 
 class RespondModel:
+    """
+        model contain respond information
+        all api respond should return this object
+    """
     token = ''
     data = {}
     message = ''
@@ -17,6 +21,10 @@ class RespondModel:
         self.code = ''
 
     def dump_json(self):
+        """
+            generate json
+        :return: json
+        """
         if self.data is None or self.message is None or self.code is None:
             raise Exception('respond incomplete')
 

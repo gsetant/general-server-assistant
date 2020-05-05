@@ -1,6 +1,7 @@
 import os
 import sys
 
+from app.core.service.plugin_service import get_all_plugin_name
 from app.tools.config_tools import get_config, REQUIREMENTS_CONFIG, APP_CONFIG
 from app.tools.db_tools import get_connection, get_collection
 from app.tools.package_tools import get_package_info, install_package
@@ -11,8 +12,8 @@ app_config = get_config(APP_CONFIG)
 
 def get_app_info():
     """
-        获取app安装的所有包信息
-    :return:
+        get installed python package information
+    :return: str info
     """
     requirements = get_config(REQUIREMENTS_CONFIG)["requirements"]
     pip_version = os.popen('pip -V').read().split(' ')[1]
@@ -29,7 +30,7 @@ def get_app_info():
 
 def install_app_require():
     """
-        根据requirements 配置的引用情况自动安装需要的包
+        use pip to install packages stated in requirements.json
     :return:
     """
     requirements = get_config(REQUIREMENTS_CONFIG)["requirements"]
@@ -37,7 +38,26 @@ def install_app_require():
         install_package(requirement["name"], requirement["version"])
 
 
+def install_plugin_require():
+    """
+        use pip to install packages stated in plugins' requirements.json
+    :return:
+    """
+    plugins_name = get_all_plugin_name()
+    for plugin in plugins_name.split(','):
+        config = get_config('app/plugins/%s/requirements.json' % plugin)
+        if config:
+            requirements = config.get('requirements')
+            if requirements:
+                for requirement in requirements:
+                    install_package(requirement.get("name"), requirement.get("version"))
+
+
 def init_database():
+    """
+        init database creat database if no exist
+    :return: mongo database object
+    """
     connection = get_connection()
     database = None
     db_list = connection.list_database_names()
@@ -48,6 +68,10 @@ def init_database():
 
 
 def init_data():
+    """
+        init data (insert user admin if no exist)
+    :return:
+    """
     collection = get_collection('user')
     if collection.find_one({"name": "admin"}) is None:
         admin_user = app_config["ADMIN"]
@@ -57,6 +81,11 @@ def init_data():
 
 
 def init_app():
+    """
+        init app
+    :return:
+    """
     install_app_require()
     init_database()
     init_data()
+    install_plugin_require()

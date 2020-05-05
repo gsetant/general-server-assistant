@@ -6,6 +6,11 @@ from app.tools.config_tools import get_config, APP_CONFIG
 
 
 def generate_jwt(user_info):
+    """
+        generate json web token by user_info
+    :param user_info: dict user info
+    :return: str json web token
+    """
     iat = time.time()
     token_dict = {
         'iat': iat,
@@ -14,17 +19,22 @@ def generate_jwt(user_info):
         'user_info': user_info
     }
     headers = {
-        'alg': "HS256",  # 声明所使用的算法
+        'alg': "HS256",
     }
-    jwt_token = jwt.encode(token_dict,  # payload, 有效载体
-                           get_config(APP_CONFIG)['JWT_SECRET_KEY'],  # 进行加密签名的密钥
-                           algorithm="HS256",  # 指明签名算法方式, 默认也是HS256
-                           headers=headers  # json web token 数据结构包含两部分, payload(有效载体), headers(标头)
-                           ).decode('ascii')  # python3 编码后得到 bytes, 再进行解码(指明解码的格式), 得到一个str
+    jwt_token = jwt.encode(token_dict,
+                           get_config(APP_CONFIG)['JWT_SECRET_KEY'],
+                           algorithm="HS256",
+                           headers=headers
+                           ).decode('ascii')
     return jwt_token
 
 
 def renew_jwt(token):
+    """
+        using old jwt to generate new jwt
+    :param token: str old jwt
+    :return: str new jwt
+    """
     data = decode_jwt(token)
     if data:
         user_info = data['user_info']
@@ -33,6 +43,11 @@ def renew_jwt(token):
 
 
 def decode_jwt(token):
+    """
+        decode and get payload form jwt
+    :param token: str jwt
+    :return: dict payload
+    """
     try:
         return jwt.decode(token, get_config(APP_CONFIG)['JWT_SECRET_KEY'], algorithms=['HS256'])
     except jwt.PyJWTError:
@@ -40,6 +55,11 @@ def decode_jwt(token):
 
 
 def verify_jwt(token):
+    """
+        verify if jwt have not been modified
+    :param token: str jwt
+    :return: Boolean
+    """
     if decode_jwt(token) is None:
         return False
     else:

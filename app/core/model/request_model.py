@@ -2,6 +2,9 @@ import json
 
 
 class RequestModel:
+    """
+       model contain request information
+    """
     token = ''
     data = {}
 

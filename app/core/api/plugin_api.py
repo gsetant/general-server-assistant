@@ -13,6 +13,10 @@ api = Blueprint('plugin_api', __name__)
 @api.route('/plugin/info', methods=['get'])
 @authentication
 def plugin_infos():
+    """
+        return all plugins info which user have the authority to access
+    :return: respond_model
+    """
     plugin_names = request.args.get("pluginNames")
     lang = request.args.get("lang")
     respond_model = RespondModel()
@@ -23,6 +27,12 @@ def plugin_infos():
 @api.route('/plugin/info/<lang>/<plugin_name>', methods=['get'])
 @authentication
 def plugin_info(lang, plugin_name):
+    """
+        return plugin info if user have authority
+    :param lang: language for i18n
+    :param plugin_name: plugin name
+    :return: respond_model
+    """
     respond_model = RespondModel()
     if not plugin_authorization(plugin_name):
         respond_model.message = 'authorization error'
@@ -34,6 +44,12 @@ def plugin_info(lang, plugin_name):
 @api.route('/plugin/setting/<lang>/<plugin_name>', methods=['get'])
 @authentication
 def plugin_setting(lang, plugin_name):
+    """
+        get plugin setting form and user plugin setting
+    :param lang: language for i18n
+    :param plugin_name: plugin name
+    :return: respond_model
+    """
     respond_model = RespondModel()
     request_model = RequestModel(request)
     jwt = request_model.token
@@ -52,6 +68,11 @@ def plugin_setting(lang, plugin_name):
 @api.route('/plugin/setting/<plugin_name>', methods=['post'])
 @authentication
 def save_setting(plugin_name):
+    """
+        save user plugin setting
+    :param plugin_name: plugin name
+    :return: respond_model
+    """
     respond_model = RespondModel()
     request_model = RequestModel(request)
     jwt = request_model.token

@@ -9,6 +9,12 @@ from app.tools.jwt_tools import renew_jwt, verify_jwt, decode_jwt
 
 
 def authentication(api_function):
+    """
+        use to check user authentication(jwt)
+        if not login return code 401
+    :param api_function:
+    :return: dump json from respond_model
+    """
     @wraps(api_function)
     def fun_dec(*args, **kwargs):
         request_model = RequestModel(request)
@@ -23,7 +29,7 @@ def authentication(api_function):
             return respond_model.dump_json(), 200
         else:
             respond_model = RespondModel()
-            respond_model.message = 'authentication error'
+            respond_model.message = 'authentication error, please login'
             respond_model.code = 50012
             return respond_model.dump_json(), 401
 
@@ -31,11 +37,13 @@ def authentication(api_function):
 
 
 class authorization(object):
-
     def __init__(self, roles=''):
         self.roles = roles
 
     def __call__(self, api_function):
+        """
+               check if user have certain roles
+        """
         @wraps(api_function)
         @authentication
         def fun_dec(*args, **kwargs):
@@ -53,6 +61,11 @@ class authorization(object):
 
 
 def plugin_authorization(plugin_name):
+    """
+        check if user have authority to access the plugin that they want to access
+    :param plugin_name: the plugin name which user want to access
+    :return: Boolean
+    """
     request_model = RequestModel(request)
     roles = decode_jwt(request_model.token)['user_info'].get('roles')
     if 'admin' in roles:
