@@ -8,13 +8,23 @@ def login(user_info):
     :param user_info: dict user info
     :return: dict user info
     """
-    collection = get_collection("user")
-    user_info = collection.find_one({"name": user_info.get('name'),
-                                     "password": get_password(user_info.get('name'), user_info.get('password'))})
+    user_info = get_user(user_info.get('name'), user_info.get('password'))
     if user_info is not None:
         user_info.pop("_id")
         return user_info
     return None
+
+
+def get_user(name, password):
+    """
+        get user by name and password
+    :param name: user name
+    :param password: password
+    :return:
+    """
+    collection = get_collection("user")
+    user_info = collection.find_one({"name": name, "password": get_password(name, password)})
+    return user_info
 
 
 def update(user_info):

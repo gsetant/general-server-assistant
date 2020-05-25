@@ -47,7 +47,6 @@ def libraries_detail(user_name, libraries):
     all_plugin = get_all_plugin_name()
 
     if settings:
-
         result = {
             'libraries': settings.get('libraries'),
             'active': settings.get('active'),
@@ -55,10 +54,10 @@ def libraries_detail(user_name, libraries):
         }
         return result
     return {
-            'libraries': '',
-            'active': [],
-            'disable': all_plugin.split(',')
-        }
+        'libraries': '',
+        'active': [],
+        'disable': all_plugin.split(',')
+    }
 
 
 def save_libraries_settings(user_name, settings):
