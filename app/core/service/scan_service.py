@@ -13,6 +13,8 @@ def run_scan(data):
             meta_data = plugin_model.search(data)
             if meta_data.get("state") is True:
                 meta_data_list.append(meta_data)
+                if data.get('autoFlag'):
+                    return meta_data_list
         if len(meta_data_list) > 0:
             return meta_data_list
     return None

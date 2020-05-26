@@ -48,7 +48,7 @@ def get_user_plugin_setting(plugin_name, user_info):
     :param user_info: dict user info
     :return: dict user plugin setting
     """
-    collection = get_collection("pluginSetting")
+    collection = get_collection("plugin_setting")
     query = {
         'name': user_info["name"],
         'plugin': plugin_name
@@ -84,7 +84,7 @@ def save_plugin_setting(plugin_name, plugin_setting, user_info):
     :param user_info: dict user info
     :return:
     """
-    collection = get_collection("pluginSetting")
+    collection = get_collection("plugin_setting")
     query = {
         'name': user_info["name"],
         'plugin': plugin_name,

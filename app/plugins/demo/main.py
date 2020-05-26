@@ -1,7 +1,6 @@
+from app.core.model.plugin_respond import PluginRespond
+
 
 def search(meta_info):
-    meta_date = {
-        "meta_data": {},
-        "state": {}
-    }
-    return meta_date
+    plugin_respond = PluginRespond()
+    return plugin_respond
