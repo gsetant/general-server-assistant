@@ -27,9 +27,9 @@ class PacoPacoMama(UnsensoredSpider):
         item = []
         '获取查询结果页html对象'
         url = 'https://www.pacopacomama.com/moviepages/%s/index.html' % q
-        html_item = self.getHtmlByurl(url)
+        html_item = self.get_html_byurl(url)
         if html_item['issuccess']:
-            media_item = self.analysisMediaHtmlByxpath(
+            media_item = self.analysis_media_html_byxpath(
                 html_item['html'], q)
             item.append({'issuccess': True, 'data': media_item})
         else:
@@ -37,29 +37,29 @@ class PacoPacoMama(UnsensoredSpider):
 
         return item
 
-    def analysisMediaHtmlByxpath(self, html, q):
+    def analysis_media_html_byxpath(self, html, q):
         """
         根据html对象与xpath解析数据
         html:<object>
         html_xpath_dict:<dict>
         return:<dict{issuccess,ex,dict}>
         """
-        media = self.media.copy()
+        media = MetaData()
         number = self.tools.cleanstr(q.upper())
-        media.update({'m_number': number})
+        media.number = number
 
         xpath_title = "//div[@id='main']/h1/text()"
         title = html.xpath(xpath_title)
         if len(title) > 0:
             title = self.tools.cleantitlenumber(
                 self.tools.cleanstr(title[0]), number)
-            media.update({'m_title': title})
+            media.title = title
 
         xpath_summary = "//dd[@class='comment']/div/text()"
         summary = html.xpath(xpath_summary)
         if len(summary) > 0:
             summary = summary[0]
-            media.update({'m_summary': summary})
+            media.summary = summary
 
         # xpath_poster = "//img/@src"
         # poster = html.xpath(xpath_poster)        
@@ -72,26 +72,26 @@ class PacoPacoMama(UnsensoredSpider):
         # studio = html.xpath(xpath_studio)
         # if len(studio) > 0:
         studio = 'PacoPacoMama'
-        media.update({'m_studio': studio})
+        media.studio = studio
 
         # xpath_directors = "//div[@class='col-md-3 info']/p[4]/a/text()"
         # directors = html.xpath(xpath_directors)
         # if len(directors) > 0:
         directors = ''
-        media.update({'m_directors': directors})
+        media.directors = directors
 
         # xpath_collections = "//div[@class='col-md-3 info']/p[6]/a/text()"
         # collections = html.xpath(xpath_collections)
         # if len(collections) > 0:
         collections = 'PacoPacoMama'
-        media.update({'m_collections': collections})
+        media.collections = collections
 
         xpath_year = "//div[@class='movie-info']/dl[3]/dd"
         year = html.xpath(xpath_year)
         if len(year) > 0:
             year = self.tools.cleanstr(year[0].text)
-            media.update({'m_year': year})
-            media.update({'m_originallyAvailableAt': year})
+            media.year = year
+            media.originally_available_at = year
 
         xpath_category = "//div[@class='clearfix']/table/tr[4]/td[2]/a/text()"
         categorys = html.xpath(xpath_category)
@@ -100,7 +100,7 @@ class PacoPacoMama(UnsensoredSpider):
             category_list.append(self.tools.cleanstr(category))
         categorys = ','.join(category_list)
         if len(categorys) > 0:
-            media.update({'m_category': categorys})
+            media.category = categorys
 
         actor = {}
         xpath_actor_name = "//div[@class='clearfix']/table/tr[1]/td[2]/a/text()"
@@ -116,6 +116,6 @@ class PacoPacoMama(UnsensoredSpider):
                 # actor.update({self.tools.cleanstr2(
                 #     actorname): ''})
 
-            media.update({'m_actor': actor})
+            media.actor = actor
 
         return media

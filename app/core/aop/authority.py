@@ -2,6 +2,7 @@ from functools import wraps
 
 from flask import request
 
+from app.core.model.plugin_respond import PluginRespond
 from app.core.model.request_model import RequestModel
 from app.core.model.respond_model import RespondModel
 from app.core.service import user_service
@@ -20,14 +21,14 @@ def media_server_authentication(api_function):
     def fun_dec(*args, **kwargs):
         request_model = RequestModel(request)
         user_info = user_service.get_user(request_model.data.get('name'), request_model.data.get('password'))
-        respond_model = RespondModel()
+        plugin_respond = PluginRespond()
         if user_info is not None:
             # user info correct
-            respond_model = api_function(*args, **kwargs)
-            return respond_model.dump_json(), 200
+            plugin_respond = api_function(*args, **kwargs)
+            return plugin_respond.dump_json(), 200
         else:
-            respond_model.message = 'username or password wrong!'
-            return respond_model.dump_json(), 401
+            plugin_respond.state = False
+            return plugin_respond.dump_json(), 401
 
     return fun_dec
 

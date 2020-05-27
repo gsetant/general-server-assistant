@@ -36,7 +36,7 @@ class MGStage(UnsensoredSpider):
             media_item = None
             for item in items_list:
                 item.click()
-                media_item = self.analysisMediaHtmlByxpath(browser, q)
+                media_item = self.analysis_media_html_byxpath(browser, q)
             logging.info('解析结果：%s' % media_item)
             logging.info('结束模拟')
             logging.info('关闭 browser 模拟')
@@ -54,9 +54,9 @@ class MGStage(UnsensoredSpider):
             item.append({'issuccess': False, 'ex': e})
             return results
 
-    def analysisMediaHtmlByxpath(self, browser, q):
+    def analysis_media_html_byxpath(self, browser, q):
 
-        media = self.media.copy()
+        media = MetaData()
         infos_xpath = "//div[@class='detail_data']"
         infos = browser.find_elements_by_xpath(infos_xpath)
         info_list = infos[0].text.split('\n')
@@ -73,7 +73,7 @@ class MGStage(UnsensoredSpider):
                         for i, actorname in enumerate(actor_name):
                             actor.update(
                                 {self.tools.cleanstr2(actorname): ''})
-                    media.update({'m_actor': actor})
+                    media.actor = actor
 
                 if keyword == 'メーカー':  # 工作室
                     media.update({'m_studio': self.tools.cleanstr(value)})
@@ -85,7 +85,7 @@ class MGStage(UnsensoredSpider):
                     media.update(
                         {'m_year': self.tools.formatdatetime(self.tools.cleanstr(value))})
                     media.update(
-                        {'m_originallyAvailableAt': self.tools.formatdatetime(self.tools.cleanstr(value))})
+                        {'m_originally_available_at': self.tools.formatdatetime(self.tools.cleanstr(value))})
 
                 if keyword == 'シリーズ':  # 系列
                     media.update(
@@ -102,7 +102,7 @@ class MGStage(UnsensoredSpider):
                         categorys_list.append(self.tools.cleanstr(item))
                     categorys = ','.join(categorys_list)
                     if len(categorys) > 0:
-                        media.update({'m_category': categorys})
+                        media.category = categorys
 
         # title
         title_xpath = "//h1[@class='tag']"

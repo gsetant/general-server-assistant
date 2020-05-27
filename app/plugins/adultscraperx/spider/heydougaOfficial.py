@@ -30,12 +30,12 @@ class HeydougaOfficial(UnsensoredSpider):
 
         '获取查询结果列表页html对象'
         url = 'https://www.heydouga.com/moviepages/%s/index.html' % queryKeyword
-        html_item = self.getHtmlByurl(url)
+        html_item = self.get_html_byurl(url)
         if html_item['issuccess']:
             browserTools = BrowserTools()
             browser = browserTools.getBrowser()
 
-            media_item = self.analysisMediaHtmlByxpath(browser, queryKeyword)
+            media_item = self.analysis_media_html_byxpath(browser, queryKeyword)
             if len(media_item) > 0:
                 item.append({'issuccess': True, 'data': media_item})
 
@@ -45,7 +45,7 @@ class HeydougaOfficial(UnsensoredSpider):
 
         return item
 
-    def analysisMediaHtmlByxpath(self, browser, q):
+    def analysis_media_html_byxpath(self, browser, q):
         """
         根据html对象与xpath解析数据
         html:<object>
@@ -63,20 +63,20 @@ class HeydougaOfficial(UnsensoredSpider):
 
         browser.get('https://www.heydouga.com/moviepages/%s/index.html' % q)
 
-        media = self.media.copy()
+        media = MetaData()
         media.update({'m_number': q.replace('/', '-')})
 
         xpath_title = "//div[@id='title-bg']/h1"
         title = browser.find_elements_by_xpath(xpath_title)[0].text
         if len(title) > 0:
             title = self.tools.cleanstr(title)
-            media.update({'m_title': title})
+            media.title = title
 
         xpath_summary = "//div[@class='movie-description']/p"
         summary = browser.find_elements_by_xpath(xpath_summary)[0].text
         if len(summary) > 0:
             summary = self.tools.cleanstr(summary)
-            media.update({'m_summary': summary})
+            media.summary = summary
 
         media.update(
             {'m_poster': 'https://www.heydouga.com/contents/%s/player_thumb.jpg' % self.format(imgnumber)})
@@ -93,7 +93,7 @@ class HeydougaOfficial(UnsensoredSpider):
         # directors = html.xpath(xpath_directors)
         # if len(directors) > 0:
         #     directors = self.tools.cleanstr(directors[0])
-        #     media.update({'m_directors': directors})
+        #     media.directors = directors
 
         # xpath_collections = "//div[@class='col-md-3 info']/p[6]/a/text()"
         # collections = html.xpath(xpath_collections)
@@ -104,8 +104,8 @@ class HeydougaOfficial(UnsensoredSpider):
         xpath_year = "//div[@id='movie-info']//li[1]/span[2]"
         year = browser.find_elements_by_xpath(xpath_year)[0].text
         if len(year) > 0:
-            media.update({'m_year': year})
-            media.update({'m_originallyAvailableAt': year})
+            media.year = year
+            media.originally_available_at = year
 
         xpath_category = "//ul[@id='movie_tag_list']/li/a"
         categorys = browser.find_elements_by_xpath(xpath_category)
@@ -114,7 +114,7 @@ class HeydougaOfficial(UnsensoredSpider):
             category_list.append(self.tools.cleanstr(category.text))
         categorys = ','.join(category_list)
         if len(categorys) > 0:
-            media.update({'m_category': categorys})
+            media.category = categorys
 
         actor = {}
         xpath_actor_name = "//div[@id='movie-info']/ul/li[2]/span[2]/a"
@@ -127,7 +127,7 @@ class HeydougaOfficial(UnsensoredSpider):
                 #         actor.update({actorname: ''})
                 #     else:
                 actor.update({actorname.text: ''})
-            media.update({'m_actor': actor})
+            media.actor = actor
 
         return media
 

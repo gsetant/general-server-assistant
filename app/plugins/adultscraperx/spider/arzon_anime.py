@@ -35,7 +35,7 @@ class ArzonAnime(BasicSpider):
             'Connection': 'keep-alive'
         }
         wsc_url = 'https://www.arzon.jp/index.php?action=adult_customer_agecheck&agecheck=1&redirect=https%3A%2F%2Fwww.arzon.jp%2F'
-        wsc_item = self.webSiteConfirmByurl(wsc_url, headers)
+        wsc_item = self.web_site_confirm_byurl(wsc_url, headers)
 
         '获取查询结果列表页html对象'
         if wsc_item['issuccess']:
@@ -43,7 +43,7 @@ class ArzonAnime(BasicSpider):
             q = q.replace(u'-', ' ')
             url = 'https://www.arzon.jp/animelist.html?t=&m=all&s=&q=%s' % q
             # print url
-            list_html_item = self.getHtmlByurl(url)
+            list_html_item = self.get_html_byurl(url)
             if list_html_item['issuccess']:
 
                 '检测是否是为查询到结果'
@@ -58,9 +58,9 @@ class ArzonAnime(BasicSpider):
                 for page_url in page_url_list:
                     if page_url != '':
                         page_url = 'https://www.arzon.jp%s' % page_url
-                        html_item = self.getHtmlByurl(page_url)
+                        html_item = self.get_html_byurl(page_url)
                         '解析html对象'
-                        media_item = self.analysisMediaHtmlByxpath(
+                        media_item = self.analysis_media_html_byxpath(
                             html_item['html'], q)
                         item.append({'issuccess': True, 'data': media_item})
 
@@ -71,28 +71,28 @@ class ArzonAnime(BasicSpider):
 
         return item
 
-    def analysisMediaHtmlByxpath(self, html, q):
+    def analysis_media_html_byxpath(self, html, q):
         """
         根据html对象与xpath解析数据
         html:<object>
         html_xpath_dict:<dict>
         return:<dict{issuccess,ex,dict}>
         """
-        media = self.media.copy()
+        media = MetaData()
         xpath_number = "//div[@class='item_register']//table[@class='item']//tr[5]/td[2]/text()"
         number = html.xpath(xpath_number)
         if len(number) > 0:
             number = self.tools.cleanstr3(number[0])
-            media.update({'m_number': number})
+            media.number = number
 
         # number = self.tools.cleanstr(q.upper())
-        # media.update({'m_number': number})
+        # media.number = number
 
         xpath_title = "//div[@class='detail_title_new']/h1/text()"
         title = html.xpath(xpath_title)
         if len(title) > 0:
             title = self.tools.cleanstr(title[0])
-            media.update({'m_title': title})
+            media.title = title
 
         xpath_poster = "//table[@class='item_detail']//tr[1]//td[1]//a//img[@class='item_img']/@src"
         poster = html.xpath(xpath_poster)
@@ -105,19 +105,19 @@ class ArzonAnime(BasicSpider):
         summary = html.xpath(xpath_summary)
         if len(summary) > 0:
             summary = self.tools.cleanstr(summary[1])
-            media.update({'m_summary': summary})
+            media.summary = summary
 
         xpath_studio = "//div[@class='item_register']/table[@class='item']//tr[2]/td[2]/a"
         studio = html.xpath(xpath_studio)
         if len(studio[0]) > 0:
             studio = self.tools.cleanstr(studio[0].text)
-            media.update({'m_studio': studio})
+            media.studio = studio
 
         xpath_directors = "//table[@class='item']//tr[5]//td[2]/a"
         directors = html.xpath(xpath_directors)
         if len(directors) > 0:
             directors = self.tools.cleanstr(directors[0].text)
-            media.update({'m_directors': directors})
+            media.directors = directors
 
         # xpath_collections = "//table[@class='item']//tr[4]//td[2]//a"
         # collections = html.xpath(xpath_collections)
@@ -130,18 +130,18 @@ class ArzonAnime(BasicSpider):
         if len(year) > 0:
             year = self.tools.cleanstr(year[0].replace(u'(DVD', '').replace(
                 u'\u30ec\u30f3\u30bf\u30eb\u7248', '').replace(u')', '').replace(u'\u30bb\u30eb\u7248', ''))
-            media.update({'m_year': year})
+            media.year = year
 
-        xpath_originallyAvailableAt = "//table[@class='item']//tr[6]/td[2]/text()"
-        originallyAvailableAt = html.xpath(xpath_originallyAvailableAt)
-        if len(originallyAvailableAt) > 0:
-            originallyAvailableAt = self.tools.cleanstr(
-                originallyAvailableAt[0])
+        xpath_originally_available_at = "//table[@class='item']//tr[6]/td[2]/text()"
+        originally_available_at = html.xpath(xpath_originally_available_at)
+        if len(originally_available_at) > 0:
+            originally_available_at = self.tools.cleanstr(
+                originally_available_at[0])
             media.update(
-                {'m_originallyAvailableAt': self.tools.formatdatetime(originallyAvailableAt)})
+                {'m_originally_available_at': self.tools.formatdatetime(originally_available_at)})
         else:
             media.update(
-                {'m_originallyAvailableAt': year})
+                {'m_originally_available_at': year})
             
 
         xpath_category = "//div[@id='adultgenre2']//table//tr/td[2]//ul//li/a"
@@ -151,7 +151,7 @@ class ArzonAnime(BasicSpider):
             category_list.append(self.tools.cleanstr(category.text))
         categorys = ','.join(category_list)
         if len(categorys) > 0:
-            media.update({'m_category': categorys})
+            media.category = categorys
 
         '''
         actor = {}
@@ -175,7 +175,7 @@ class ArzonAnime(BasicSpider):
 
         return media
 
-    def posterPicture(self, url, r, w, h):
+    def poster_picture(self, url, r, w, h):
         cropped = None
         headers = {
             'Accept': 'image/webp,*/*',
@@ -203,7 +203,7 @@ class ArzonAnime(BasicSpider):
             cropped = rimg.crop((int(w) - int(r), 0, int(w), int(h)))
         return cropped
 
-    def artPicture(self, url, r, w, h):
+    def art_picture(self, url, r, w, h):
         cropped = None
         headers = {
             'Accept': 'image/webp,*/*',
@@ -225,7 +225,7 @@ class ArzonAnime(BasicSpider):
         cropped = img.crop((0, 0, img.size[0], img.size[1]))
         return cropped
 
-    def checkServer(self):
+    def check_server(self):
         headers = {
             'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -235,7 +235,7 @@ class ArzonAnime(BasicSpider):
             'Connection': 'keep-alive'
         }
         wsc_url = 'https://www.arzon.jp/index.php?action=adult_customer_agecheck&agecheck=1&redirect=https%3A%2F%2Fwww.arzon.jp%2F'
-        wsc_item = self.webSiteConfirmByurl(wsc_url, headers)
+        wsc_item = self.web_site_confirm_byurl(wsc_url, headers)
 
         '获取查询结果列表页html对象'
         if wsc_item['issuccess']:

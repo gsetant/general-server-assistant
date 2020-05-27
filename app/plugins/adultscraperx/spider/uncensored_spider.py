@@ -17,7 +17,7 @@ from app.plugins.adultscraperx.spider.basic_spider import BasicSpider
 
 
 class UnsensoredSpider(BasicSpider):
-    def posterPicture(self, url, r, w, h):
+    def poster_picture(self, url, r, w, h):
         cropped = None
         try:
             response = self.client_session.get(url)
@@ -40,7 +40,7 @@ class UnsensoredSpider(BasicSpider):
             pass
         return cropped
 
-    def actorPicture(self, url, r, w, h):
+    def actor_picture(self, url, r, w, h):
         """
         处理艺人图片，默认实现根据webui配置进行剪裁，如果子类无特殊需求不需要重写
         :param url: 图片地址

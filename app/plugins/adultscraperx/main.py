@@ -1,11 +1,9 @@
 import re
 
-from app.core.model.plugin_respond import PluginRespond
-from app.plugins.config import spider_config
+from app.plugins.adultscraperx.setting import spider_config
 
 
 def search(meta_info):
-    plugin_respond = PluginRespond()
     meta_data_list = []
     video_title = meta_info.get('video_title')
     # TODO movie type need to design
@@ -35,7 +33,4 @@ def search(meta_info):
                     for item in items:
                         meta_data_list.append(item)
 
-    if len(meta_data_list) > 0:
-        plugin_respond.state = True
-        plugin_respond.meta_data = meta_data_list
-    return plugin_respond
+    return meta_data_list

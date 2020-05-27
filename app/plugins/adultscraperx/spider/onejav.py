@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys
+
+from app.core.model.meta_data import MetaData
+
 if sys.version.find('2', 0, 1) == 0:
     try:
         from cStringIO import StringIO
@@ -28,45 +31,45 @@ class Onejav(BasicSpider):
 
         '访问站点'
         url = 'https://onejav.com/torrent/%s' % q.lower().replace('-', '')
-        html_item = self.getHtmlByurl(url)
+        html_item = self.get_html_byurl(url)
         if html_item['issuccess']:
-            media_item = self.analysisMediaHtmlByxpath(html_item['html'], q.upper())
-            item.append({'issuccess': True, 'data': media_item})
+            media_item = self.analysis_media_html_byxpath(html_item['html'], q.upper())
+            item.append(media_item)
         else:
             pass  # print repr(html_item['ex'])
 
         return item
 
-    def analysisMediaHtmlByxpath(self, html, q):
+    def analysis_media_html_byxpath(self, html, q):
         """
         根据html对象与xpath解析数据
         html:<object>
         html_xpath_dict:<dict>
         return:<dict{issuccess,ex,dict}>
         """
-        media = self.media.copy()
+        media = MetaData()
         title = q.upper()
-        media.update({'m_title': title})
+        media.title = title
 
         xpath_poster = "//div[@class='column']/img[@class='image']/@src"
         poster = html.xpath(xpath_poster)
         if len(poster) > 0:
             poster = self.tools.cleanstr(poster[0])
-            media.update({'m_poster': poster})
-            media.update({'m_art_url': poster})
+            media.poster = poster
+            media.thumbnail = poster
 
         xpath_summary = "//p[@class='level has-text-grey-dark']/text()"
         summary = html.xpath(xpath_summary)
         if len(summary) > 0:
             summary = summary[0]
-            media.update({'m_summary': summary})
+            media.summary = summary
 
         xpath_year = "//p[@class='subtitle is-6']/a/text()"
         year = html.xpath(xpath_year)
         if len(year) > 0:
             year = self.tools.dateconvert(year[0])
-            media.update({'m_year': year})
-            media.update({'m_originallyAvailableAt': year})
+            media.year = year
+            media.originally_available_at = year
 
         xpath_category = "//div[@class='tags']//a/text()"
         categorys = html.xpath(xpath_category)
@@ -75,7 +78,7 @@ class Onejav(BasicSpider):
             category_list.append(self.tools.cleanstr(category))
         categorys = ','.join(category_list)
         if len(categorys) > 0:
-            media.update({'m_category': categorys})
+            media.category = categorys
 
         actor = {}
         xpath_actor_name = "//a[@class='panel-block']"
@@ -83,6 +86,6 @@ class Onejav(BasicSpider):
         if len(actor_name) > 0:
             for i, actorname in enumerate(actor_name):
                 actor.update({actorname.text: ''})
-            media.update({'m_actor': actor})
+            media.actor = actor
 
         return media

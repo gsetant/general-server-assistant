@@ -11,7 +11,7 @@ class OnePondo(UnsensoredSpider):
         super().__init__()
         self.checkUrl = 'https://www.1pondo.tv/'
 
-    def getName(self):
+    def get_name(self):
         return "1Pondo"
 
     def search(self, q):
@@ -20,12 +20,12 @@ class OnePondo(UnsensoredSpider):
         '''
         item = []
         url = "https://www.1pondo.tv/movies/%s/" % q
-        html_item = self.getHtmlByurl(url)
+        html_item = self.get_html_byurl(url)
         if html_item['issuccess']:
             browserTools = BrowserTools()
             browser = browserTools.getBrowser()
 
-            media_item = self.analysisMediaHtmlByxpath(browser, q)
+            media_item = self.analysis_media_html_byxpath(browser, q)
             if len(media_item) > 0:
                 item.append({'issuccess': True, 'data': media_item})
 
@@ -33,8 +33,8 @@ class OnePondo(UnsensoredSpider):
 
         return item
 
-    def analysisMediaHtmlByxpath(self, browser, q):
-        media = self.media.copy()
+    def analysis_media_html_byxpath(self, browser, q):
+        media = MetaData()
         browser.get("https://www.1pondo.tv/movies/%s/" % q)
         btn_xpath = "//button[@class='button-flat button-medium button-icon--right see-more']"
         btn = browser.find_elements_by_xpath(btn_xpath)
@@ -44,7 +44,7 @@ class OnePondo(UnsensoredSpider):
         time.sleep(1)
 
         number = self.tools.cleanstr(q.upper())
-        media.update({'m_number': number})
+        media.number = number
 
         # title
         title_xpath = "//h1[@class='h1--dense']"
@@ -72,7 +72,7 @@ class OnePondo(UnsensoredSpider):
         datatime_xpath = "//li[@class='movie-detail__spec'][1]/span[@class='spec-content']"
         datatime = browser.find_elements_by_xpath(datatime_xpath)
         media.update({'m_year': datatime[0].text})
-        media.update({'m_originallyAvailableAt': datatime[0].text})
+        media.update({'m_originally_available_at': datatime[0].text})
 
         # types
         categorys_xpath = "//span[@class='spec-content']/a[@class='spec__tag']"
@@ -83,7 +83,7 @@ class OnePondo(UnsensoredSpider):
             categorys_list.append(self.tools.cleanstr(item.text))
         categorys = ','.join(categorys_list)
         if len(categorys) > 0:
-            media.update({'m_category': categorys})
+            media.category = categorys
 
         # actor
         actor = {}
@@ -93,6 +93,6 @@ class OnePondo(UnsensoredSpider):
             for i, actorname in enumerate(actor_name):
                 actor.update({self.tools.cleanstr2(
                     actorname.text): ''})
-        media.update({'m_actor': actor})
+        media.actor = actor
 
         return media

@@ -28,9 +28,9 @@ class HeyzoOfficial(UnsensoredSpider):
         '获取查询结果列表页html对象'
         url = 'https://www.heyzo.com/moviepages/%s/index.html' % queryKeyword
 
-        html_item = self.getHtmlByurl(url)
+        html_item = self.get_html_byurl(url)
         if html_item['issuccess']:
-            media_item = self.analysisMediaHtmlByxpath(
+            media_item = self.analysis_media_html_byxpath(
                 html_item['html'], queryKeyword)
             item.append({'issuccess': True, 'data': media_item})
         else:
@@ -38,7 +38,7 @@ class HeyzoOfficial(UnsensoredSpider):
 
         return item
 
-    def analysisMediaHtmlByxpath(self, html, q):
+    def analysis_media_html_byxpath(self, html, q):
         """
         根据html对象与xpath解析数据
         html:<object>
@@ -51,24 +51,24 @@ class HeyzoOfficial(UnsensoredSpider):
         number = html.xpath(xpath_number)
         if len(number) > 0:
             number = self.tools.cleanstr(number[0])
-            self.media.update({'m_number': number})
+            self.media.number = number
         '''
-        media = self.media.copy()
+        media = MetaData()
         number =  'heyzo-%s' % self.tools.cleanstr(q.upper())
-        media.update({'m_number': number})
+        media.number = number
 
         xpath_title = "//div[@id='wrapper']/article/section[1]/div[@id='movie']/h1/text()"
         title = html.xpath(xpath_title)
         if len(title) > 0:
             title = self.tools.cleantitlenumber(
                 self.tools.cleanstr(title[0]), number)
-            media.update({'m_title': title})
+            media.title = title
 
         xpath_summary = "//p[@class='memo']/text()"
         summary = html.xpath(xpath_summary)
         if len(summary) > 0:
             summary = summary[0]
-            media.update({'m_summary': summary})
+            media.summary = summary
 
         media.update(
             {'m_poster': 'https://www.heyzo.com/contents/3000/%s/images/player_thumbnail.jpg' % q})
@@ -82,14 +82,14 @@ class HeyzoOfficial(UnsensoredSpider):
         if len(collections) > 0:
             collections = self.tools.cleanstr(collections[0])
             if not collections == '-----':
-                media.update({'m_collections': collections})
+                media.collections = collections
 
         xpath_year = "//tr[@class='table-release-day']/td[2]/text()"
         year = html.xpath(xpath_year)
         if len(year) > 0:
             year = self.tools.cleanstr(year[0])
-            media.update({'m_year': year})
-            media.update({'m_originallyAvailableAt': year})
+            media.year = year
+            media.originally_available_at = year
 
         xpath_category = "//ul[@class='tag-keyword-list']/li/a/text()"
         categorys = html.xpath(xpath_category)
@@ -98,7 +98,7 @@ class HeyzoOfficial(UnsensoredSpider):
             category_list.append(self.tools.cleanstr(category))
         categorys = ','.join(category_list)
         if len(categorys) > 0:
-            media.update({'m_category': categorys})
+            media.category = categorys
 
         actor = {}
         xpath_actor_name = "//tr[@class='table-actor']/td//a/span/text()"
@@ -111,6 +111,6 @@ class HeyzoOfficial(UnsensoredSpider):
                 #     actor.update({actorname: ''})
                 # else:
                 actor.update({actorname: ''})
-            media.update({'m_actor': actor})
+            media.actor = actor
 
         return media

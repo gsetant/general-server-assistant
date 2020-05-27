@@ -32,7 +32,7 @@ class Javr(UnsensoredSpider):
         xpathResult = "//div[@class='content']/h3[@class='cactus-post-title entry-title h4']/a/@href"
         for page in range(1, 3):
             url = baseUrl + str(page) + query
-            html_item = self.getHtmlByurl(url)
+            html_item = self.get_html_byurl(url)
             if not html_item['issuccess']:
                 return item
 
@@ -48,9 +48,9 @@ class Javr(UnsensoredSpider):
                             break
                     if not matchFlag:
                         continue
-                    html_item = self.getHtmlByurl(resultName)
+                    html_item = self.get_html_byurl(resultName)
                     if html_item['issuccess']:
-                        media_item = self.analysisMediaHtmlByxpath(
+                        media_item = self.analysis_media_html_byxpath(
                             html_item['html'], q.replace(' ', '-'))
                         # if pt is not None:
                         #     media_item.update({'m_number': media_item['m_number'] + pt})
@@ -61,16 +61,16 @@ class Javr(UnsensoredSpider):
                         pass  # print repr(html_item['ex'])
         return item
 
-    def analysisMediaHtmlByxpath(self, html, q):
+    def analysis_media_html_byxpath(self, html, q):
         """
         根据html对象与xpath解析数据
         html:<object>
         html_xpath_dict:<dict>
         return:<dict{issuccess,ex,dict}>
         """
-        media = self.media.copy()
+        media = MetaData()
         number = self.tools.cleanstr(q.upper())
-        media.update({'m_number': number})
+        media.number = number
 
         studio_text = ''
         xpath_p = "//div[@class='post-metadata']/p"
@@ -84,7 +84,7 @@ class Javr(UnsensoredSpider):
         title = html.xpath(xpath_title)
         title = title[0].replace(
             'Watch XXX Japanese Porn - ', '').replace(studio, '')
-        media.update({'m_title': title})
+        media.title = title
         media.update({'m_summary': title})
 
         xpath_poster = "//img[@id='myvidcover']/@src"
@@ -94,10 +94,10 @@ class Javr(UnsensoredSpider):
                 media.update({'m_poster': post_url})
                 media.update({'m_art_url': post_url})
 
-        media.update({'m_studio': studio})
+        media.studio = studio
 
         directors = ''
-        media.update({'m_directors': directors})
+        media.directors = directors
 
         xpath_category = "//div[@class='categories tags cactus-info']/a/text()"
         categorys = html.xpath(xpath_category)
@@ -106,7 +106,7 @@ class Javr(UnsensoredSpider):
             category_list.append(self.tools.cleanstr(category))
         categorys = ','.join(category_list)
         if len(categorys) > 0:
-            media.update({'m_category': categorys})
+            media.category = categorys
 
         actor = {}
         xpath_actor_name = "//div[@class='channel-content']//a/h4/text()"
@@ -121,6 +121,6 @@ class Javr(UnsensoredSpider):
                     actor.update(
                         {actorname: 'https://media.javr.club/wp-content/uploads/2019/02/pornstar-no-img-1.jpg'})
 
-            media.update({'m_actor': actor})
+            media.actor = actor
 
         return media

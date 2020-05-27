@@ -33,7 +33,7 @@ class ConfigManager():
         directors_xpath = data['html_xpath']['m_directors']
         collections_xpath = data['html_xpath']['m_collections']
         year_xpath = data['html_xpath']['m_year']
-        originallyAvailableAt_xpath = data['html_xpath']['m_originallyAvailableAt']
+        originally_available_at_xpath = data['html_xpath']['m_originally_available_at']
         type_xpath = data['html_xpath']['m_type']
         actor_xpath = data['html_xpath']['m_actor']
         ### html_xpath end ###
@@ -50,7 +50,7 @@ class ConfigManager():
                 'm_directors': directors_xpath,
                 'm_collections': collections_xpath,
                 'm_year': year_xpath,
-                'm_originallyAvailableAt': originallyAvailableAt_xpath,
+                'm_originally_available_at': originally_available_at_xpath,
                 'm_type': type_xpath,
                 'm_actor': actor_xpath
             }

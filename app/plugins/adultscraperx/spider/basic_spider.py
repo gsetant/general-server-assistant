@@ -17,37 +17,22 @@ class BasicSpider:
 
     def __init__(self):
         self.tools = Tools()
-        self.configmanager = ConfigManager()
+        self.config_manager = ConfigManager()
         self.client_session = requests.Session()
         self.checkUrl = ''  # 服务状态检查Url 子类必须为此变量赋值
-        self.media = {
-            'm_id': '',
-            'm_number': '',
-            'm_title': '',
-            'm_poster': '',
-            'm_art_url': '',
-            'm_summary': '',
-            'm_studio': '',
-            'm_directors': '',
-            'm_collections': '',
-            'm_year': '',
-            'm_originallyAvailableAt': '',
-            'm_category': '',
-            'm_actor': ''
-        }
 
-    def searchWithCache(self, q, type):
-        metaDate = check_cache(q, type)
-        if metaDate is not None:
+    def search_with_cache(self, q, type):
+        meta_date = check_cache(q, type)
+        if meta_date is not None:
             logging.info('缓存命中： %s ， %s' % (q, type))
-            return metaDate
+            return meta_date
         else:
-            metaDate = self.search(q)
-            if len(metaDate) is not 0:
-                set_cache(q, metaDate, type)
+            meta_date = self.search(q)
+            if len(meta_date) is not 0:
+                set_cache(q, meta_date, type)
                 logging.info('首次匹配设置缓存： %s ， %s' % (q, type))
 
-        return metaDate
+        return meta_date
 
     def search(self, q):
         """
@@ -57,7 +42,7 @@ class BasicSpider:
         """
         raise RuntimeError('未实现接口')
 
-    def analysisMediaHtmlByxpath(self, html, q):
+    def analysis_media_html_byxpath(self, html, q):
         """
        根据爬取的数据格式化为plex能使用的数据（子类必须实现，供search（q）方法使用的工具方法）
        :param html: 番号
@@ -66,7 +51,7 @@ class BasicSpider:
        """
         raise RuntimeError('未实现接口')
 
-    def posterPicture(self, url, r, w, h):
+    def poster_picture(self, url, r, w, h):
         """
        处理海报图片，默认实现根据webui配置进行剪裁，如果子类无特殊需求不需要重写
        :param url: 图片地址
@@ -86,12 +71,12 @@ class BasicSpider:
             return cropped
 
         img = Image.open(BytesIO(response.content))
-        rimg = img.resize((int(w), int(h)), Image.ANTIALIAS)
+        rims = img.resize((int(w), int(h)), Image.ANTIALIAS)
         # (left, upper, right, lower)
-        cropped = rimg.crop((int(w) - int(r), 0, int(w), int(h)))
+        cropped = rims.crop((int(w) - int(r), 0, int(w), int(h)))
         return cropped
 
-    def artPicture(self, url, r, w, h):
+    def art_picture(self, url, r, w, h):
         cropped = None
         """
         处理背景图片，默认实现不进行剪裁，如果子类无特殊需求不需要重写
@@ -114,7 +99,7 @@ class BasicSpider:
 
         return cropped
 
-    def actorPicture(self, url, r, w, h):
+    def actor_picture(self, url, r, w, h):
         """
        处理艺人图片，默认实现根据webui配置进行剪裁，如果子类无特殊需求不需要重写
        :param url: 图片地址
@@ -139,7 +124,7 @@ class BasicSpider:
         # TODO 目前除Arzon实现了演员图片外其他站未实现，且默认实现未提供
         return cropped
 
-    def getName(self):
+    def get_name(self):
         return self.__class__.__name__
 
     def pictureProcessing(self, data):
@@ -152,14 +137,14 @@ class BasicSpider:
         cropped = None
         # 开始剪切
         if mode == 'poster':
-            cropped = self.posterPicture(url, r, w, h)
+            cropped = self.poster_picture(url, r, w, h)
         if mode == 'art':
-            cropped = self.artPicture(url, r, w, h)
+            cropped = self.art_picture(url, r, w, h)
         if mode == 'actor':
-            cropped = self.actorPicture(url, r, w, h)
+            cropped = self.actor_picture(url, r, w, h)
         return cropped
 
-    def pictureProcessingCFT(self, data,r,w,h):        
+    def picture_processing_cft(self, data, r, w, h):
         mode = data['mode']
         url = data['url']
         webkey = data['webkey']
@@ -172,14 +157,14 @@ class BasicSpider:
         if h == '0':
             h = config.IMG_H
         if mode == 'poster':
-            cropped = self.posterPicture(url, r, w, h)
+            cropped = self.poster_picture(url, r, w, h)
         if mode == 'art':
-            cropped = self.artPicture(url, r, w, h)
+            cropped = self.art_picture(url, r, w, h)
         if mode == 'actor':
-            cropped = self.actorPicture(url, r, w, h)
+            cropped = self.actor_picture(url, r, w, h)
         return cropped
 
-    def webSiteConfirmByurl(self, url, headers):
+    def web_site_confirm_byurl(self, url, headers):
         '''
         针对有需要确认访问声明的站点
         return: <dict{issuccess,ex}>
@@ -205,7 +190,7 @@ class BasicSpider:
 
             return r.content
 
-    def getHtmlByurl(self, url):
+    def get_html_byurl(self, url):
         '''
         获取html对象函数
         url：需要访问的地址<str>
@@ -238,7 +223,7 @@ class BasicSpider:
                          'execpt': scc})
         return item
 
-    def getHtmlByurlheaders(self, url, headers):
+    def get_html_byurlheaders(self, url, headers):
         """
         获取html对象函数
         url：需要访问的地址<str>
@@ -275,12 +260,12 @@ class BasicSpider:
         url = html.xpath(xpaths)
         return url
 
-    def checkServer(self):
+    def check_server(self):
         """
         检测站点是否在线
         :return: 站点是否在线
         """
-        html_item = self.getHtmlByurl(self.checkUrl)
+        html_item = self.get_html_byurl(self.checkUrl)
         if html_item['issuccess']:
             return True
         else:

@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys
+
+from app.core.model.meta_data import MetaData
+
 if sys.version.find('2', 0, 1) == 0:
     try:
         from cStringIO import StringIO
@@ -28,7 +31,7 @@ class Javbus(BasicSpider):
 
         '获取查询结果列表页html对象'
         url = 'https://www.javbus.com/search/%s' % q
-        list_html_item = self.getHtmlByurl(url)
+        list_html_item = self.get_html_byurl(url)
         if list_html_item['issuccess']:
 
             xpaths = "//a[@class='movie-box']/@href"
@@ -37,17 +40,17 @@ class Javbus(BasicSpider):
 
             for page_url in page_url_list:
                 if page_url != '':
-                    html_item = self.getHtmlByurl(page_url)
+                    html_item = self.get_html_byurl(page_url)
                     if html_item['issuccess']:
-                        media_item = self.analysisMediaHtmlByxpath(
+                        media_item = self.analysis_media_html_byxpath(
                             html_item['html'], q)
-                        item.append({'issuccess': True, 'data': media_item})
+                        item.append(media_item)
         else:
             pass  # print repr(html_item['ex'])
 
         return item
 
-    def analysisMediaHtmlByxpath(self, html, q):
+    def analysis_media_html_byxpath(self, html, q):
         """
         根据html对象与xpath解析数据
         html:<object>
@@ -60,50 +63,50 @@ class Javbus(BasicSpider):
         number = html.xpath(xpath_number)
         if len(number) > 0:
             number = self.tools.cleanstr(number[0])
-            self.media.update({'m_number': number})
+            self.media.number = number
         '''
-        media = self.media.copy()
+        media = MetaData()
         number = self.tools.cleanstr(q.upper())
-        media.update({'m_number': number})
+        media.number = number
 
         xpath_title = "//div[@class='container']/h3/text()"
         title = html.xpath(xpath_title)
         if len(title) > 0:
             title = self.tools.cleantitlenumber(
                 self.tools.cleanstr(title[0]), number)
-            media.update({'m_title': title})
+            media.title = title
 
         xpath_poster = "//div[@class='col-md-9 screencap']/a[@class='bigImage']/img/@src"
         poster = html.xpath(xpath_poster)
         if len(poster) > 0:
             poster = self.tools.cleanstr(poster[0])
-            media.update({'m_poster': poster})
-            media.update({'m_art_url': poster})
+            media.poster = poster
+            media.thumbnail = poster
 
         xpath_studio = "//div[@class='col-md-3 info']/p[5]/a/text()"
         studio = html.xpath(xpath_studio)
         if len(studio) > 0:
             studio = self.tools.cleanstr(studio[0])
-            media.update({'m_studio': studio})
+            media.studio = studio
 
         xpath_directors = "//div[@class='col-md-3 info']/p[4]/a/text()"
         directors = html.xpath(xpath_directors)
         if len(directors) > 0:
             directors = self.tools.cleanstr(directors[0])
-            media.update({'m_directors': directors})
+            media.directors = directors
 
         xpath_collections = "//div[@class='col-md-3 info']/p[6]/a/text()"
         collections = html.xpath(xpath_collections)
         if len(collections) > 0:
             collections = self.tools.cleanstr(collections[0])
-            media.update({'m_collections': collections})
+            media.collections = collections
 
         xpath_year = "/html/body/div[@class='container']/div[@class='row movie']/div[@class='col-md-3 info']/p[2]/text()"
         year = html.xpath(xpath_year)
         if len(year) > 0:
             year = self.tools.cleanstr(year[0])
-            media.update({'m_year': year})
-            media.update({'m_originallyAvailableAt': year})
+            media.originally_available_at = year
+            media.year = year
 
         xpath_category = "/html/body/div[@class='container']/div[@class='row movie']/div[@class='col-md-3 info']/p[8]/span[@class='genre']/a"
         categorys = html.xpath(xpath_category)
@@ -112,7 +115,7 @@ class Javbus(BasicSpider):
             category_list.append(self.tools.cleanstr(category.text))
         categorys = ','.join(category_list)
         if len(categorys) > 0:
-            media.update({'m_category': categorys})
+            media.category = categorys
 
         actor = {}
         xpath_actor_name = "/html/body/div[@class='container']/div[@class='row movie']/div[@class='col-md-3 info']/p[10]/span[@class='genre']/a/text()"
@@ -127,7 +130,7 @@ class Javbus(BasicSpider):
                     actor.update({actorname: ''})
                 else:
                     actor.update({actorname: actor_url[i]})
-            media.update({'m_actor': actor})
+            media.actor = actor
 
         return media
 

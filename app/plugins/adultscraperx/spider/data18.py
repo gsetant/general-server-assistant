@@ -28,7 +28,7 @@ class Data18(BasicSpider):
 
         '访问站点'
         url = 'https://data18.empirestores.co/Search?q=%s' % q
-        list_html_item = self.getHtmlByurl(url)
+        list_html_item = self.get_html_byurl(url)
         if list_html_item['issuccess']:
             '检测是否是为查询到结果'
             xpath_404 = "//div[@class='noresults']/h1/text()"
@@ -79,36 +79,36 @@ class Data18(BasicSpider):
             page_url_list = self.getitemspage(list_html_item['html'], xpaths)
             if len(page_url_list) > 0:
                 page_url = 'https://data18.empirestores.co%s' % page_url_list[j]
-                html_item = self.getHtmlByurl(page_url)
+                html_item = self.get_html_byurl(page_url)
                 '解析html对象'
                 re_item.append(
-                    {'issuccess': True, 'data': self.analysisMediaHtmlByxpath(html_item['html'])})
+                    {'issuccess': True, 'data': self.analysis_media_html_byxpath(html_item['html'])})
         else:
             print(list_html_item['ex'])
 
         return re_item
 
-    def analysisMediaHtmlByxpath(self, html):
+    def analysis_media_html_byxpath(self, html):
         """
         根据html对象与xpath解析数据
         html:<object>
         html_xpath_dict:<dict>
         return:<dict{issuccess,ex,dict}>
         """
-        media = self.media.copy()
+        media = MetaData()
         xpath_title = "//h1[@class='description']/text()"
         title = html.xpath(xpath_title)
         if len(title) > 0:
             title = self.tools.cleanstr2(title[0])
-            media.update({'m_title': title})
+            media.title = title
 
         xpath_poster = "//img[@class='img-fluid mx-auto']/@src"
         poster = html.xpath(xpath_poster)
         if len(poster) > 0:
             poster = self.tools.cleanstr(poster[0])
             poster =  poster.replace('/10/','/500/')
-            media.update({'m_poster': poster})
-            media.update({'m_art_url': poster})
+            media.poster = poster
+            media.thumbnail = poster
 
         xpath_summary_1 = "//h5[@class='tag-line']/text()"
         xpath_summary_2 = "//div[@class='synopsis']/p/text()"
@@ -120,19 +120,19 @@ class Data18(BasicSpider):
         if len(summary_2) > 0:
             summary += '%s ' % self.tools.cleanstr2(summary_2[0])
         if summary != '':
-            media.update({'m_summary': summary})
+            media.summary = summary
 
         xpath_studio = "//div[@class='studio']/a/text()"
         studio = html.xpath(xpath_studio)
         if len(studio) > 0:
             studio = self.tools.cleanstr2(studio[0])
-            media.update({'m_studio': studio})
+            media.studio = studio
 
         xpath_directors = "//div[@class='director']/a/text()"
         directors = html.xpath(xpath_directors)
         if len(directors) > 0:
             directors = self.tools.cleanstr2(directors[0])
-            media.update({'m_directors': directors})
+            media.directors = directors
 
         '收藏集-因为没有系列字段所以用演播室代替'
         if len(studio) > 0:
@@ -144,13 +144,13 @@ class Data18(BasicSpider):
             year = self.tools.cleanstr2(year[0])
             media.update({'m_year': self.tools.dateconvert(year)})
 
-        xpath_originallyAvailableAt = "//div[@class='release-date'][1]/text()"
-        originallyAvailableAt = html.xpath(xpath_originallyAvailableAt)
-        if len(originallyAvailableAt) > 0:
-            originallyAvailableAt = self.tools.cleanstr2(
-                originallyAvailableAt[0])
+        xpath_originally_available_at = "//div[@class='release-date'][1]/text()"
+        originally_available_at = html.xpath(xpath_originally_available_at)
+        if len(originally_available_at) > 0:
+            originally_available_at = self.tools.cleanstr2(
+                originally_available_at[0])
             media.update(
-                {'m_originallyAvailableAt': self.tools.dateconvert(originallyAvailableAt)})
+                {'m_originally_available_at': self.tools.dateconvert(originally_available_at)})
 
         xpath_category = "//div[@class='categories']//a//text()"
         categorys = html.xpath(xpath_category)
@@ -159,7 +159,7 @@ class Data18(BasicSpider):
             category_list.append(self.tools.cleanstr2(category))
         categorys = ','.join(category_list)
         if len(categorys) > 0:
-            media.update({'m_category': categorys})
+            media.category = categorys
 
         actor = {}
         xpath_actor_name = "//div[@class='video-performer']/a/span[@class='video-performer-name overlay']/span[@class='overlay-inner']/text()"
@@ -176,11 +176,11 @@ class Data18(BasicSpider):
                 actor.update({self.tools.cleanstr2(
                     actorname): ''})
 
-            media.update({'m_actor': actor})
+            media.actor = actor
 
         return media
 
-    def posterPicture(self, url, r, w, h):
+    def poster_picture(self, url, r, w, h):
         cropped = None
         try:
             response = self.client_session.get(url)

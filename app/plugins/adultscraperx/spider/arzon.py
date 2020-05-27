@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 
+from app.core.model.meta_data import MetaData
 from app.plugins.adultscraperx.spider.basic_spider import BasicSpider
 
 if sys.version.find('2', 0, 1) == 0:
@@ -38,12 +39,12 @@ class Arzon(BasicSpider):
             'Connection': 'keep-alive'
         }
         wsc_url = 'https://www.arzon.jp/index.php?action=adult_customer_agecheck&agecheck=1&redirect=https%3A%2F%2Fwww.arzon.jp%2F'
-        wsc_item = self.webSiteConfirmByurl(wsc_url, headers)
+        wsc_item = self.web_site_confirm_byurl(wsc_url, headers)
 
         '获取查询结果列表页html对象'
         if wsc_item['issuccess']:
             url = 'https://www.arzon.jp/itemlist.html?t=&m=all&s=&q=%s' % q
-            list_html_item = self.getHtmlByurl(url)
+            list_html_item = self.get_html_byurl(url)
             if list_html_item['issuccess']:
 
                 '检测是否是为查询到结果'
@@ -58,20 +59,18 @@ class Arzon(BasicSpider):
                 for page_url in page_url_list:
                     if page_url != '':
                         page_url = 'https://www.arzon.jp%s' % page_url
-                        html_item = self.getHtmlByurl(page_url)
+                        html_item = self.get_html_byurl(page_url)
                         '解析html对象'
-                        media_item = self.analysisMediaHtmlByxpath(
+                        media_item = self.analysis_media_html_byxpath(
                             html_item['html'], q)
-                        item.append({'issuccess': True, 'data': media_item})
-
+                        item.append(media_item)
             else:
                 print(list_html_item['ex'])
         else:
             print(wsc_item['ex'])
-
         return item
 
-    def analysisMediaHtmlByxpath(self, html, q):
+    def analysis_media_html_byxpath(self, html, q):
         """
         根据html对象与xpath解析数据
         html:<object>
@@ -84,62 +83,60 @@ class Arzon(BasicSpider):
         number = html.xpath(xpath_number)
         if len(number) > 0:
             number = self.tools.cleanstr(number[0])
-            media.update({'m_number': number})
+            media.number = number
         '''
-        media = self.media.copy()
+        media = MetaData()
         number = self.tools.cleanstr(q.upper())
-        media.update({'m_number': number})
+        media.number = number
 
         xpath_title = "//div[@class='detail_title_new2']/table/tr/td[2]/h1"
         title = html.xpath(xpath_title)
         if len(title) > 0:
             title = self.tools.cleanstr(title[0].text)
-            media.update({'m_title': title})
+            media.title = title
 
         xpath_poster = "//table[@class='item_detail']//tr[1]//td[1]//a//img[@class='item_img']/@src"
         poster = html.xpath(xpath_poster)
         if len(poster) > 0:
             poster = self.tools.cleanstr(poster[0])
-            media.update({'m_poster': 'https:%s' % poster})
-            media.update({'m_art_url': 'https:%s' % poster})
+            media.poster = 'https:%s' % poster
+            media.thumbnail = 'https:%s' % poster
 
         xpath_summary = "//table[@class='item_detail']//tr[2]//td[@class='text']//div[@class='item_text']/text()"
         summary = html.xpath(xpath_summary)
         if len(summary) > 0:
             summary = self.tools.cleanstr(summary[1])
-            media.update({'m_summary': summary})
+            media.summary = summary
 
         xpath_studio = "//div[@class='item_register']/table[@class='item']//tr[2]/td[2]/a"
         studio = html.xpath(xpath_studio)
         if len(studio) > 0:
             studio = self.tools.cleanstr(studio[0].text)
-            media.update({'m_studio': studio})
+            media.studio = studio
 
         xpath_directors = "//table[@class='item']//tr[5]//td[2]/a"
         directors = html.xpath(xpath_directors)
         if len(directors) > 0:
             directors = self.tools.cleanstr(directors[0].text)
-            media.update({'m_directors': directors})
+            media.directors = directors
 
         xpath_collections = "//table[@class='item']//tr[4]//td[2]//a"
         collections = html.xpath(xpath_collections)
         if collections[0].text is not None:
             collections = self.tools.cleanstr(collections[0].text)
-            media.update({'m_collections': collections})
+            media.collections = collections
 
         xpath_year = "//table[@class='item']//tr[6]/td[2]/text()"
         year = html.xpath(xpath_year)
         if len(year) > 0:
             year = self.tools.cleanstr(year[0])
-            media.update({'m_year': self.tools.formatdatetime(year)})
+            media.year = self.tools.formatdatetime(year)
 
-        xpath_originallyAvailableAt = "//table[@class='item']//tr[6]/td[2]/text()"
-        originallyAvailableAt = html.xpath(xpath_originallyAvailableAt)
-        if len(originallyAvailableAt) > 0:
-            originallyAvailableAt = self.tools.cleanstr(
-                originallyAvailableAt[0])
-            media.update(
-                {'m_originallyAvailableAt': self.tools.formatdatetime(originallyAvailableAt)})
+        xpath_originally_available_at = "//table[@class='item']//tr[6]/td[2]/text()"
+        originally_available_at = html.xpath(xpath_originally_available_at)
+        if len(originally_available_at) > 0:
+            originally_available_at = self.tools.cleanstr(originally_available_at[0])
+            media.originally_available_at = self.tools.formatdatetime(originally_available_at)
 
         xpath_category = "//div[@id='adultgenre2']//table//tr/td[2]//ul//li/a"
         categorys = html.xpath(xpath_category)
@@ -148,7 +145,7 @@ class Arzon(BasicSpider):
             category_list.append(self.tools.cleanstr(category.text))
         categorys = ','.join(category_list)
         if len(categorys) > 0:
-            media.update({'m_category': categorys})
+            media.category = categorys
 
         actor = {}
         xpath_actor_name = "//div[@class='item_register']//table[@class='item']//tr[1]/td[2]//a"
@@ -159,19 +156,17 @@ class Arzon(BasicSpider):
 
         if len(actor_name) > 0:
             for i, actorname in enumerate(actor_name):
-                html = self.getHtmlByurl(
+                html = self.get_html_byurl(
                     'https://www.arzon.jp%s' % actor_url[i])
                 if html['issuccess']:
                     xpath_actor_image = "//table[@class='p_list1']//img/@src"
                     actorimageurl = html['html'].xpath(xpath_actor_image)
-
                 actor.update({actorname.text: 'https:%s' % actorimageurl[0]})
-
-            media.update({'m_actor': actor})
+            media.actor = actor
 
         return media
 
-    def posterPicture(self, url, r, w, h):
+    def poster_picture(self, url, r, w, h):
         cropped = None
         headers = {
             'Accept': 'image/webp,*/*',
@@ -199,7 +194,7 @@ class Arzon(BasicSpider):
             cropped = rimg.crop((int(w) - int(r), 0, int(w), int(h)))
         return cropped
 
-    def artPicture(self, url, r, w, h):
+    def art_picture(self, url, r, w, h):
         cropped = None
         headers = {
             'Accept': 'image/webp,*/*',
@@ -221,7 +216,7 @@ class Arzon(BasicSpider):
         cropped = img.crop((0, 0, img.size[0], img.size[1]))
         return cropped
 
-    def actorPicture(self, url, r, w, h):
+    def actor_picture(self, url, r, w, h):
         cropped = None
         headers = {
             'Accept': 'image/webp,*/*',
@@ -244,7 +239,7 @@ class Arzon(BasicSpider):
         cropped = img.crop((0, 0, img.size[0], img.size[1]))
         return cropped
 
-    def checkServer(self):
+    def check_server(self):
         headers = {
             'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -254,7 +249,7 @@ class Arzon(BasicSpider):
             'Connection': 'keep-alive'
         }
         wsc_url = 'https://www.arzon.jp/index.php?action=adult_customer_agecheck&agecheck=1&redirect=https%3A%2F%2Fwww.arzon.jp%2F'
-        wsc_item = self.webSiteConfirmByurl(wsc_url, headers)
+        wsc_item = self.web_site_confirm_byurl(wsc_url, headers)
 
         '获取查询结果列表页html对象'
         if wsc_item['issuccess']:
