@@ -39,7 +39,7 @@ class Arzon(BasicSpider):
             'Connection': 'keep-alive'
         }
         wsc_url = 'https://www.arzon.jp/index.php?action=adult_customer_agecheck&agecheck=1&redirect=https%3A%2F%2Fwww.arzon.jp%2F'
-        wsc_item = self.web_site_confirm_byurl(wsc_url, headers)
+        wsc_item = self.web_site_confirm_by_url(wsc_url, headers)
 
         '获取查询结果列表页html对象'
         if wsc_item['issuccess']:
@@ -249,7 +249,7 @@ class Arzon(BasicSpider):
             'Connection': 'keep-alive'
         }
         wsc_url = 'https://www.arzon.jp/index.php?action=adult_customer_agecheck&agecheck=1&redirect=https%3A%2F%2Fwww.arzon.jp%2F'
-        wsc_item = self.web_site_confirm_byurl(wsc_url, headers)
+        wsc_item = self.web_site_confirm_by_url(wsc_url, headers)
 
         '获取查询结果列表页html对象'
         if wsc_item['issuccess']:

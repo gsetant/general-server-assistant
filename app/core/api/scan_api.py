@@ -3,7 +3,6 @@ from flask import Blueprint, request
 from app.core.aop.authority import media_server_authentication
 from app.core.model.plugin_respond import PluginRespond
 from app.core.model.request_model import RequestModel
-from app.core.model.respond_model import RespondModel
 from app.core.service.scan_service import run_scan
 
 api = Blueprint('scan_api', __name__)

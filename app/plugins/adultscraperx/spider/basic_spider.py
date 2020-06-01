@@ -1,13 +1,13 @@
+import base64
 import logging
 from io import BytesIO
 from lxml import etree  # Xpath包
 
 from PIL import Image
 
-
 import requests
 
-from app.plugins.adultscraperx.internel import config
+from app.plugins.adultscraperx.setting import config
 from app.plugins.adultscraperx.internel.config import ConfigManager
 from app.plugins.adultscraperx.internel.tools import Tools
 from app.tools.cache_tools import check_cache, set_cache
@@ -21,18 +21,16 @@ class BasicSpider:
         self.client_session = requests.Session()
         self.checkUrl = ''  # 服务状态检查Url 子类必须为此变量赋值
 
-    def search_with_cache(self, q, type):
-        meta_date = check_cache(q, type)
-        if meta_date is not None:
-            logging.info('缓存命中： %s ， %s' % (q, type))
-            return meta_date
-        else:
-            meta_date = self.search(q)
-            if len(meta_date) is not 0:
-                set_cache(q, meta_date, type)
-                logging.info('首次匹配设置缓存： %s ， %s' % (q, type))
-
-        return meta_date
+    def search_with_img(self, q):
+        """
+        搜索并获取图片
+        :param q:
+        :return:
+        """
+        media_infos = self.search(q)
+        for media_info in media_infos:
+            self.picture_processing(media_info)
+        return media_infos
 
     def search(self, q):
         """
@@ -65,7 +63,7 @@ class BasicSpider:
             response = requests.get(url)
             if response.status_code == 403:
                 response = self.client_session.get(url)
-            
+
         except Exception as ex:
             print('error : %s' % repr(ex))
             return cropped
@@ -127,44 +125,29 @@ class BasicSpider:
     def get_name(self):
         return self.__class__.__name__
 
-    def pictureProcessing(self, data):
-        mode = data['mode']
-        url = data['url']
+    def picture_to_base64 (self, img):
+        output_buffer = BytesIO()
+        img.save(output_buffer, format='JPEG')
+        byte_data = output_buffer.getvalue()
+        base64_str = base64.b64encode(byte_data)
+        return base64_str.decode("utf-8")
+
+    def picture_processing(self, media_info):
         r = config.IMG_R
         w = config.IMG_W
         h = config.IMG_H
-        webkey = data['webkey']
         cropped = None
         # 开始剪切
-        if mode == 'poster':
-            cropped = self.poster_picture(url, r, w, h)
-        if mode == 'art':
-            cropped = self.art_picture(url, r, w, h)
-        if mode == 'actor':
-            cropped = self.actor_picture(url, r, w, h)
-        return cropped
+        if media_info.poster:
+            media_info.poster = self.picture_to_base64(self.poster_picture(media_info.poster, r, w, h))
+        if media_info.thumbnail:
+            media_info.thumbnail = self.picture_to_base64(self.art_picture(media_info.thumbnail, r, w, h))
+        if media_info.actor:
+            for (k, v) in media_info.actor.items():
+                if v:
+                    media_info.actor[k] = self.picture_to_base64(self.actor_picture(v, r, w, h))
 
-    def picture_processing_cft(self, data, r, w, h):
-        mode = data['mode']
-        url = data['url']
-        webkey = data['webkey']
-        cropped = None
-        # 开始剪切        
-        if r == '0':
-            r = config.IMG_R
-        if w == '0':
-            w = config.IMG_W
-        if h == '0':
-            h = config.IMG_H
-        if mode == 'poster':
-            cropped = self.poster_picture(url, r, w, h)
-        if mode == 'art':
-            cropped = self.art_picture(url, r, w, h)
-        if mode == 'actor':
-            cropped = self.actor_picture(url, r, w, h)
-        return cropped
-
-    def web_site_confirm_byurl(self, url, headers):
+    def web_site_confirm_by_url(self, url, headers):
         '''
         针对有需要确认访问声明的站点
         return: <dict{issuccess,ex}>

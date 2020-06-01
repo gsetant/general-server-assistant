@@ -29,7 +29,7 @@ def search(meta_info):
                 code = template['formatter'].format(code)
                 for webSiteClass in web_list:
                     web_site = webSiteClass()
-                    items = web_site.search(code)
+                    items = web_site.search_with_img(code)
                     for item in items:
                         meta_data_list.append(item)
 
