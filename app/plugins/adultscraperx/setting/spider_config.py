@@ -1,5 +1,6 @@
 from app.plugins.adultscraperx.formatter.CaribbeanFormatter import CaribbeanFormatter
 from app.plugins.adultscraperx.formatter.CaribbeancomprFormatter import CaribbeancomprFormatter
+from app.plugins.adultscraperx.formatter.Fc2ClubFormatter import Fc2ClubFormatter
 from app.plugins.adultscraperx.formatter.HeydougaFormatter import HeydougaFormatter
 from app.plugins.adultscraperx.formatter.HeydougaOfficialFormatter import HeydougaOfficialFormatter
 from app.plugins.adultscraperx.formatter.HeyzoFormatter import HeyzoFormatter
@@ -12,6 +13,7 @@ from app.plugins.adultscraperx.formatter.fc2ppvFormatter import Fc2ppvFormater
 from app.plugins.adultscraperx.formatter.mgstageFormatter import MGStageFormatter
 from app.plugins.adultscraperx.formatter.onePondoFormatter import OnePondoFormatter
 from app.plugins.adultscraperx.formatter.tenMusumeFormatter import TenMusumeFormatter
+from app.plugins.adultscraperx.spider.Fc2Club import Fc2Club
 from app.plugins.adultscraperx.spider.HeyzoOfficial import HeyzoOfficial
 from app.plugins.adultscraperx.spider.arzon import Arzon
 from app.plugins.adultscraperx.spider.arzon_anime import ArzonAnime
@@ -83,6 +85,13 @@ SOURCE_LIST = {
             "pattern": r"(tokyo|TOKYO|Tokyo).*[A-Za-z]+[\ -]?\d+",
             'formatter': TokyoHotFormatter,
             'web_list': [Javr]
+        },
+        #  fc2club for FC2PPV
+        {
+            "name": 'fc2club for FC2PPV',
+            "pattern": r"(fc|Fc|FC).*\d{6,7}",
+            'formatter': Fc2ClubFormatter,
+            'webList': [Fc2Club]
         },
         #  javr for FC2PPV
         {
