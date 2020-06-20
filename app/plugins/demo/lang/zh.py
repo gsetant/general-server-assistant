@@ -1,4 +1,5 @@
 text = {
     'name': 'demo',
-    'tittle': 'demo'
+    'tittle': 'demo',
+    'content': '插件demo'
 }

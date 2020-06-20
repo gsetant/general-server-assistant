@@ -1,4 +1,5 @@
 text = {
     'name': 'demo',
-    'tittle': 'demo'
+    'tittle': 'demo',
+    'content': 'a demo of the plugin system'
 }
