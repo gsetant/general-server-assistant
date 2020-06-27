@@ -1,3 +1,5 @@
+from secrets import token_urlsafe
+
 from app.tools.db_tools import get_collection
 from app.tools.sha1_tools import sha1_encode
 
@@ -34,9 +36,31 @@ def update(user_info):
     :return:
     """
     collection = get_collection("user")
-    user_info['password'] = get_password(user_info['name'], user_info['password'])
+    collection.update({"name": user_info['name']}, user_info)
+
+
+def update_password(user_info):
+    """
+        update password
+    :param user_info:
+    :return:
+    """
+    collection = get_collection("user")
+    if user_info.get('password') and user_info.get('password') != '':
+        user_info['password'] = get_password(user_info['name'], user_info['password'])
     collection.update({"name": user_info['name']}, user_info)
 
 
 def get_password(user_name, password):
     return sha1_encode(user_name + password)
+
+
+def generate_token(user):
+    """
+        save plugin token
+    :return: token
+    """
+    token = token_urlsafe(16)
+    user['token'] = token
+    update(user)
+    return token

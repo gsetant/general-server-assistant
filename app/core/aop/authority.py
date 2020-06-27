@@ -45,7 +45,8 @@ def authentication(api_function):
         request_model = RequestModel(request)
         if request_model.token and verify_jwt(request_model.token):
             respond_model = api_function(*args, **kwargs)
-            respond_model.token = renew_jwt(request_model.token)
+            if not respond_model.token:
+                respond_model.token = renew_jwt(request_model.token)
             if respond_model.message == 'authorization error':
                 respond_model.code = 50012
                 return respond_model.dump_json(), 403
