@@ -1,6 +1,5 @@
-from app.core.model.plugin_respond import PluginRespond
 
 
-def search(meta_info):
-    plugin_respond = PluginRespond()
-    return plugin_respond
+def search(meta_info, user_setting):
+    meta_data_list = []
+    return meta_data_list
