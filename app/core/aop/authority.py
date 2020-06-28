@@ -20,7 +20,7 @@ def media_server_authentication(api_function):
     @wraps(api_function)
     def fun_dec(*args, **kwargs):
         request_model = RequestModel(request)
-        user_info = user_service.get_user(request_model.data.get('name'), request_model.data.get('password'))
+        user_info = user_service.get_user_by_token(request_model.data.get('token'))
         plugin_respond = PluginRespond()
         if user_info is not None:
             # user info correct

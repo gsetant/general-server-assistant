@@ -1,15 +1,12 @@
 import re
 
-from app.core.service.plugin_service import get_user_plugin_setting
-from app.plugins.adultscraperx.config import get_info
 from app.plugins.adultscraperx.setting import spider_config
 
 
-def search(meta_info):
+def search(meta_info, user_setting):
     meta_data_list = []
     video_title = meta_info.get('video_title')
     part_file = meta_info.get('part_file')
-    user_setting = get_user_plugin_setting(get_info('en').get('name'), {'name': meta_info.get('name')})
     movie_type = ''
     if user_setting.get('japan_censored_directory_mark') in part_file:
         movie_type = 'censored'

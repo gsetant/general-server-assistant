@@ -22,10 +22,21 @@ def get_user(name, password):
         get user by name and password
     :param name: user name
     :param password: password
-    :return:
+    :return: user info
     """
     collection = get_collection("user")
     user_info = collection.find_one({"name": name, "password": get_password(name, password)})
+    return user_info
+
+
+def get_user_by_token(token):
+    """
+        use plugin token to get use info
+    :param token: plugin token
+    :return: user info
+    """
+    collection = get_collection("user")
+    user_info = collection.find_one({"token": token})
     return user_info
 
 
