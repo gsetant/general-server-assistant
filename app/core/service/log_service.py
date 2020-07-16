@@ -37,15 +37,15 @@ def get_line(the_file_path, line_number):
     return ''
 
 
-def get_new_log(the_file_path, last_line):
+def get_new_log(the_file_path, last_unread_line):
     """
         get log of specific line
-    :param last_line: last unread line
+    :param last_unread_line: last unread line
     :param the_file_path: log file path
     :return: log string
     """
     log = ''
-    line_number = int(last_line)
+    line_number = int(last_unread_line)
     if line_number < 1:
         return ''
     for cur_line_number, line in enumerate(open(the_file_path, 'rU')):
