@@ -40,7 +40,7 @@ def get_line(the_file_path, line_number):
 def get_new_log(the_file_path, last_line):
     """
         get log of specific line
-    :param last_line: last read line
+    :param last_line: last unread line
     :param the_file_path: log file path
     :return: log string
     """
