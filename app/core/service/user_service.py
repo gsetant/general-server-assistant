@@ -1,6 +1,7 @@
 from secrets import token_urlsafe
 
 from app.tools.db_tools import get_collection
+from app.tools.log_tools import log
 from app.tools.sha1_tools import sha1_encode
 
 
@@ -13,6 +14,7 @@ def login(user_info):
     user_info = get_user(user_info.get('name'), user_info.get('password'))
     if user_info is not None:
         user_info.pop("_id")
+        log('info', 'user login: %s' % user_info.get('name'))
         return user_info
     return None
 
@@ -60,6 +62,7 @@ def update_password(user_info):
     if user_info.get('password') and user_info.get('password') != '':
         user_info['password'] = get_password(user_info['name'], user_info['password'])
     collection.update({"name": user_info['name']}, user_info)
+    log('info', 'password saved')
 
 
 def get_password(user_name, password):

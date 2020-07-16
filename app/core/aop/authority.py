@@ -75,7 +75,7 @@ class authorization(object):
         def fun_dec(*args, **kwargs):
             request_model = RequestModel(request)
             user_info = decode_jwt(request_model.token)['user_info']
-            if user_info.get('roles') and user_info.get('roles') in self.roles:
+            if  self.roles in user_info.get('roles'):
                 respond_model = api_function(*args, **kwargs)
                 return respond_model
             else:
