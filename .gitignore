@@ -1,0 +1,6 @@
+.idea
+*.pyc
+*.log
+/app/plugins/*
+!/app/plugins/demo
+!/app/plugins/__init__.py
