@@ -1,3 +1,11 @@
+import os
+import shutil
+import uuid
+import zipfile
+from urllib.request import urlretrieve
+
+import requests
+from lxml import etree
 from werkzeug.utils import import_string, find_modules
 
 from app.tools.db_tools import get_collection
@@ -11,10 +19,23 @@ def get_all_plugin_name():
     modules = find_modules(f'app.plugins', include_packages=True, recursive=False)
     names = ''
     for name in modules:
-        names += ','+name[name.rfind('.')+1:]
+        names += ',' + name[name.rfind('.') + 1:]
     if len(names) > 0:
         names = names[1:]
     return names
+
+
+def get_all_plugin_info(language):
+    """
+        get all plugin info in the server
+    :return: all plugin info
+    """
+    names = get_all_plugin_name()
+    names = names.split(',')
+    plugin_infos = []
+    for name in names:
+        plugin_infos.append(get_plugin_info(name, language))
+    return plugin_infos
 
 
 def get_plugin_info(plugin_name, lang):
@@ -98,4 +119,85 @@ def save_plugin_setting(plugin_name, plugin_setting, user_info):
         collection.update(query, setting)
     else:
         collection.insert(setting)
+
+
+def install_plugin(github_address):
+    """
+        install plugin with github address
+    :param github_address: the github address for install plugin
+    :return: status : success or fail with err msg
+    """
+    # TODO add check function, check if the github address is a gestant plugin
+    branch = get_plugin_version_from_github(github_address)[0]
+    download_and_install_plugin(github_address, branch)
+    return 'success'
+
+
+def install_plugin_version(github_address, version):
+    """
+        install plugin with github address
+    :param version: plugin version
+    :param github_address: the github address for install plugin
+    :return: status : success or fail with err msg
+    """
+    # TODO add check function, check if the github address is a gestant plugin
+    branch = version
+    download_and_install_plugin(github_address, branch)
+    return 'success'
+
+
+def download_and_install_plugin(github_address, branch):
+    """
+        download and install plugin into gestant
+    :param github_address: basic github address
+    :param branch: tag or branch to download
+    :return:
+    """
+    github_address = github_address + "/archive/%s.zip" % branch
+
+    file_name = str(uuid.uuid1())
+    urlretrieve(github_address, "download/%s.zip" % file_name)
+    # unzip
+    with zipfile.ZipFile('download/%s.zip' % file_name, 'r') as zzz:
+        zzz.extractall('download/%s' % file_name)
+
+    # rename dir
+    plugin_dir = ''
+    for root, dirs, files in os.walk('download/%s' % file_name):
+        plugin_dir = dirs[0]
+        break
+    plugin_name = plugin_dir
+    plugin_name = plugin_name.replace('-%s' % branch, '')
+
+    # remove old and install new
+    delete_plugin_if_exist(plugin_name)
+    shutil.move("download/%s/%s" % (file_name, plugin_dir), "app/plugins/%s" % plugin_name)
+
+
+def delete_plugin_if_exist(plugin_name):
+    """
+        delete plugin
+    :param plugin_name: plugin name
+    :return:
+    """
+    if os.path.exists("app/plugins/%s" % plugin_name):
+        shutil.rmtree("app/plugins/%s" % plugin_name)
+
+
+def get_plugin_version_from_github(github_address):
+    """
+        get plugin version info from github
+    :param github_address: plugin's github address
+    :return: list version info
+    """
+    git_tag_url = github_address + '/tags'
+    html = etree.HTML(requests.get(git_tag_url).content)
+    tag_list = []
+    tags = html.xpath('/html/body/div[4]/div/main/div[2]/div/div[2]/div/div[1]/div/div[1]/h4/a/text()')
+    for tag in tags:
+        tag = tag.replace(' ', '')
+        tag = tag.replace('\n', '')
+        tag_list.append(tag)
+    tag_list.append('master')
+    return tag_list
 

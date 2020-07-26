@@ -1,10 +1,11 @@
 from flask import Blueprint, request
 
-from app.core.aop.authority import authentication, plugin_authorization
+from app.core.aop.authority import authentication, plugin_authorization, authorization
 from app.core.model.request_model import RequestModel
 from app.core.model.respond_model import RespondModel
 from app.core.service.plugin_service import get_plugin_infos, get_plugin_info, get_plugin_setting, save_plugin_setting, \
-    get_user_plugin_setting
+    get_user_plugin_setting, get_all_plugin_info, install_plugin, download_and_install_plugin, delete_plugin_if_exist, \
+    get_plugin_version_from_github, install_plugin_version
 from app.tools.jwt_tools import decode_jwt
 
 api = Blueprint('plugin_api', __name__)
@@ -81,4 +82,68 @@ def save_setting(plugin_name):
         respond_model.message = 'authorization error'
         return respond_model
     save_plugin_setting(plugin_name, request_model.data, user_info_jwt)
+    return respond_model
+
+
+@api.route('/setting/plugin/<lang>', methods=['get'])
+@authorization('admin')
+def all_plugin_info(lang):
+    """
+        return all plugin info available in the server
+    :return: respond_model
+    """
+    respond_model = RespondModel()
+    respond_model.data = get_all_plugin_info(lang)
+    return respond_model
+
+
+@api.route('/setting/plugin/install', methods=['post'])
+@authorization('admin')
+def install_new_plugin():
+    """
+        install new plugin
+    :return:
+    """
+    request_model = RequestModel(request)
+    respond_model = RespondModel()
+    respond_model.data = install_plugin(request_model.data.get('github'))
+    return respond_model
+
+
+@api.route('/setting/plugin/delete', methods=['post'])
+@authorization('admin')
+def delete_plugin():
+    """
+        delete plugin
+    :return:
+    """
+    request_model = RequestModel(request)
+    respond_model = RespondModel()
+    delete_plugin_if_exist(request_model.data.get('name'))
+    return respond_model
+
+
+@api.route('/setting/plugin/version', methods=['post'])
+@authorization('admin')
+def get_plugin_version_info():
+    """
+        get all plugin version from github
+    :return:
+    """
+    respond_model = RespondModel()
+    request_model = RequestModel(request)
+    respond_model.data = get_plugin_version_from_github(request_model.data.get('github'))
+    return respond_model
+
+
+@api.route('/setting/plugin/update', methods=['post'])
+@authorization('admin')
+def install_by_version():
+    """
+        install plugin by version
+    :return:
+    """
+    request_model = RequestModel(request)
+    respond_model = RespondModel()
+    respond_model.data = install_plugin_version(request_model.data.get('github'), request_model.data.get('version'))
     return respond_model

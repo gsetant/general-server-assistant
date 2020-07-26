@@ -17,6 +17,7 @@ def media_server_authentication(api_function):
     :param api_function:
     :return: dump json from respond_model
     """
+
     @wraps(api_function)
     def fun_dec(*args, **kwargs):
         request_model = RequestModel(request)
@@ -40,6 +41,7 @@ def authentication(api_function):
     :param api_function:
     :return: dump json from respond_model
     """
+
     @wraps(api_function)
     def fun_dec(*args, **kwargs):
         request_model = RequestModel(request)
@@ -70,12 +72,13 @@ class authorization(object):
         """
                check if user have certain roles
         """
+
         @wraps(api_function)
         @authentication
         def fun_dec(*args, **kwargs):
             request_model = RequestModel(request)
             user_info = decode_jwt(request_model.token)['user_info']
-            if  self.roles in user_info.get('roles'):
+            if self.roles in user_info.get('roles'):
                 respond_model = api_function(*args, **kwargs)
                 return respond_model
             else:
