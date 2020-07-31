@@ -46,10 +46,26 @@ def update(user_info):
     """
         update user info in database
     :param user_info: dict user info
-    :return:
+    :return: insert or update
     """
     collection = get_collection("user")
-    collection.update({"name": user_info['name']}, user_info)
+    if collection.find_one({"name": user_info['name']}):
+        collection.update({"name": user_info['name']}, user_info)
+        return False
+    else:
+        collection.insert(user_info)
+        return True
+
+
+def get_password_from_db(user_info):
+    """
+        get user password from database
+    :param user_info: user info
+    :return: password
+    """
+    collection = get_collection("user")
+    user_from_db = collection.find_one({'name': user_info['name']})
+    return user_from_db.get('password')
 
 
 def update_password(user_info):
@@ -61,8 +77,8 @@ def update_password(user_info):
     collection = get_collection("user")
     if user_info.get('password') and user_info.get('password') != '':
         user_info['password'] = get_password(user_info['name'], user_info['password'])
-    collection.update({"name": user_info['name']}, user_info)
     log('info', 'password saved')
+    return update(user_info)
 
 
 def get_password(user_name, password):
@@ -78,3 +94,16 @@ def generate_token(user):
     user['token'] = token
     update(user)
     return token
+
+
+def get_all_user_info():
+    """
+        get all user info
+    :return: user info in list
+    """
+    collection = get_collection("user")
+    user_infos = list(collection.find())
+    for user_info in user_infos:
+        user_info.pop('_id')
+        user_info.pop('password')
+    return user_infos
