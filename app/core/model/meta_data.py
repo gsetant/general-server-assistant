@@ -4,7 +4,7 @@ class MetaData:
        model Meta data
     """
 
-    tittle: ''
+    title: ''
     original_title: ''
     summary: ''
     studio: ''

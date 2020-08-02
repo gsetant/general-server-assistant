@@ -21,6 +21,17 @@ def run_scan(data):
     return result
 
 
+def run_manual_scan(data, user_info):
+    plugin = data.get("selectPlugin")
+    result = []
+    plugin_model = import_string('app.plugins.%s.main' % plugin)
+    plugin_config = import_string('app.plugins.%s.config' % plugin)
+    user_setting = get_user_plugin_setting(plugin_config.get_info('en').get('name'), {'name': user_info.get('name')})
+    meta_data = plugin_model.search(data, user_setting)
+    result.extend(trans_to_dict(meta_data))
+    return result
+
+
 def trans_to_dict(object_list):
     dic_list = []
     for meta_object in object_list:
