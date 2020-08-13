@@ -3,6 +3,7 @@ from werkzeug.utils import import_string
 from app.core.service.libraries_service import libraries_detail
 from app.core.service.plugin_service import get_user_plugin_setting
 from app.core.service.user_service import get_user_by_token
+from app.tools.log_tools import log
 
 
 def run_scan(data):
@@ -14,7 +15,10 @@ def run_scan(data):
             plugin_model = import_string('app.plugins.%s.main' % plugin)
             plugin_config = import_string('app.plugins.%s.config' % plugin)
             user_setting = get_user_plugin_setting(plugin_config.get_info('en').get('name'), {'name': user_info.get('name')})
-            meta_data = plugin_model.search(data, user_setting)
+            try:
+                meta_data = plugin_model.search(data, user_setting)
+            except Exception as ex:
+                log('error', repr(ex), plugin)
             result.extend(trans_to_dict(meta_data))
             if data.get('autoFlag'):
                 return result
@@ -27,7 +31,10 @@ def run_manual_scan(data, user_info):
     plugin_model = import_string('app.plugins.%s.main' % plugin)
     plugin_config = import_string('app.plugins.%s.config' % plugin)
     user_setting = get_user_plugin_setting(plugin_config.get_info('en').get('name'), {'name': user_info.get('name')})
-    meta_data = plugin_model.search(data, user_setting)
+    try:
+        meta_data = plugin_model.search(data, user_setting)
+    except Exception as ex:
+        log('error', repr(ex), plugin)
     result.extend(trans_to_dict(meta_data))
     return result
 
