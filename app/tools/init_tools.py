@@ -37,7 +37,6 @@ def install_app_require():
     for requirement in requirements:
         install_package(requirement["name"], requirement["version"])
 
-
 def install_plugin_require():
     """
         use pip to install packages stated in plugins' requirements.json
@@ -85,7 +84,7 @@ def init_app():
         init app
     :return:
     """
-    install_app_require()
+    #install_app_require()
     init_database()
     init_data()
     install_plugin_require()

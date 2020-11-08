@@ -5,3 +5,5 @@
 !/app/plugins/demo/
 !/app/plugins/__init__.py
 /download/
+.vscode/*
+_venv/*
