@@ -19,6 +19,10 @@
     {
       "name": "lxml",
       "version": "release"
+    },
+    {
+      "name": "requests",
+      "version": "release"
     }
   ]
 }
