@@ -7,11 +7,11 @@
     "PORT": "9999",
     "SUPERTOKEN":"",
     "DB": {
-        "HOST": "127.0.0.1",
-        "PORT": 27019,
+        "HOST": "192.168.2.102",
+        "PORT": 27017,
         "DBNAME":"general-server-assistant",
         "USER": "root",
-        "PWD": "general-server-assistant"
+        "PWD": "root"
     },
     "?DEBUG": "框架调试",
     "DEBUG": true,

@@ -7,3 +7,4 @@
 /download/
 .vscode/*
 _venv/*
+config/appConfig.json
