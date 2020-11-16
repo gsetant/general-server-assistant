@@ -4,7 +4,7 @@
 
 # 初始化自动安装 基本 环境支持包  ###别换地方
 from app.tools.init_base_package import init_base_require
-init_base_require()
+init_base_require() 
 
 import logging
 from app.tools.config_tools import APP_CONFIG, get_config
