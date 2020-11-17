@@ -35,7 +35,7 @@ def check_cache(code, plugin_name):
         meta_infos = collection.find(search_query)
         if meta_infos is not None:
             for meta_info in meta_infos:
-                meta_info.update({'cache_id': str(meta_info._id)})
+                meta_info.get('meta_data').update({'cache_id': str(meta_info.get('_id'))})
                 meta_info_cache.append(meta_info['meta_data'])
     finally:
         lock.release()
