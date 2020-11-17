@@ -17,6 +17,7 @@ class MetaData:
     poster: ''
     # base64 encoded
     thumbnail: ''
+    cache_id: ''
     """
         #base64 encoded
         actor : { 'actor name': 'picture' }
@@ -36,6 +37,7 @@ class MetaData:
         self.poster = ''
         self.thumbnail = ''
         self.actor = {}
+        self.cache_id = ''
 
     def get_dic(self):
         return self.__dict__
