@@ -1,5 +1,7 @@
 import base64
-from flask import Blueprint, request, make_response
+import io
+
+from flask import Blueprint, request, make_response, send_file
 
 from app.core.aop.authority import media_server_authentication, authentication
 from app.core.model.plugin_respond import PluginRespond
@@ -54,8 +56,16 @@ def picture(pic_type, cache_id):
     :return: picture
     """
     pic_base64 = get_pic(pic_type, cache_id)
+<<<<<<< HEAD
     response = make_response(base64.b64decode(pic_base64))
     response.headers.set('Content-Type', 'image/jpeg')
     response.headers.set(
         'Content-Disposition', 'attachment', filename='%s.jpg' % cache_id)
     return response
+=======
+    return send_file(
+        io.BytesIO(base64.b64decode(pic_base64)),
+        mimetype='image/jpeg',
+        as_attachment=False,
+        attachment_filename='%s.jpg' % cache_id)
+>>>>>>> a4d8c64d09857445f391af54bcef4345d1e1d594
