@@ -8,10 +8,10 @@
     "SUPERTOKEN":"",
     "DB": {
         "HOST": "192.168.2.102",
-        "PORT": 27019,
+        "PORT": 27017,
         "DBNAME":"general-server-assistant",
         "USER": "root",
-        "PWD": "general-server-assistant"
+        "PWD": "root"
     },
     "?DEBUG": "框架调试",
     "DEBUG": true,

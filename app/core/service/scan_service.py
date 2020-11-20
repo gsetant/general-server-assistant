@@ -5,8 +5,10 @@ from app.core.service.plugin_service import get_user_plugin_setting
 from app.core.service.user_service import get_user_by_token
 from app.tools.cache_tools import get_cache_by_id
 from app.tools.log_tools import log
+from urllib.request import quote
 import base64
 import json
+
 
 
 def run_scan(data):
@@ -78,6 +80,7 @@ def save_pic_to_db(meta_data_list):
             meta_actor = meta_data.get('actor')
             for (k, v) in meta_data.get('actor').items():
                 url = "%s/%s" % (k, cache_id)
+                url = quote(url)
                 meta_actor.update({k: pic_base_url + url})
             meta_data.update({'actor': meta_actor})
     return meta_data_list
