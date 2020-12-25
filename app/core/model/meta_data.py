@@ -1,5 +1,9 @@
 
 class MetaData:
+
+    __setitem__ = object.__setattr__
+    __getitem__ = object.__getattribute__
+
     """
        model Meta data
     """

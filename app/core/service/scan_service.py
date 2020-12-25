@@ -42,12 +42,13 @@ def run_manual_scan(data, user_info):
     plugin_model = import_string('app.plugins.%s.main' % plugin)
     plugin_config = import_string('app.plugins.%s.config' % plugin)
     user_setting = get_user_plugin_setting(plugin_config.get_info('en').get('name'), {'name': user_info.get('name')})
+    meta_data = {}
     try:
         meta_data = plugin_model.search(data, user_setting)
     except Exception as ex:
         log('error', repr(ex), plugin)
     result.extend(trans_to_dict(meta_data))
-    save_pic_to_db(result)
+    # save_pic_to_db(result)
     return result
 
 
