@@ -17,7 +17,7 @@ init_app()
 from flask import Flask
 from flask_cors import *
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='front-end/dist/', static_url_path='')
 app_config = get_config(APP_CONFIG)
 CORS(app, supports_credentials=True)
 
