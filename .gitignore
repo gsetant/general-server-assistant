@@ -7,7 +7,6 @@
 !/download/__init__.py
 .vscode/*
 _venv/*
-config/appConfig.json
 
 .DS_Store
 node_modules/
