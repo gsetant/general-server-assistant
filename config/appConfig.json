@@ -7,11 +7,11 @@
     "PORT": "9999",
     "SUPERTOKEN":"",
     "DB": {
-        "HOST": "192.168.1.150",
+        "HOST": "127.0.0.1",
         "PORT": 27017,
         "DBNAME":"general-server-assistant",
         "USER": "root",
-        "PWD": "au.mineserver.top"
+        "PWD": "root"
     },
     "?DEBUG": "框架调试",
     "DEBUG": true,
