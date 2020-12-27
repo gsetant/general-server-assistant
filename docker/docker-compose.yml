@@ -1,0 +1,29 @@
+version: '3'
+services:
+  easy-canvas:
+    image: gstant/general-server-assistant:latest
+    container_name: general-server-assistant
+    restart: always
+    ports:
+      - 9999:9999
+    volumes:
+      - ./config:/home/gstant/general-server-assistant/config/
+    depends_on:
+      - mongo-db
+  mongo-db:
+    image: mongo:latest
+    container_name: mongo-db
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: gstant
+    volumes:
+      - ./data/db:/data/db
+      - /etc/localtime:/etc/localtime
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
