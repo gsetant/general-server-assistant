@@ -13,4 +13,12 @@ else
   cp /home/gstant/general-server-assistant/docker/requirements.json /home/gstant/general-server-assistant/config/requirements.json
 fi
 
+
+if [ -f "/home/gstant/general-server-assistant/app/plugins/__init__.py" ];then
+  echo "have __init__.py"
+else
+  echo "generate __init__.py"
+  touch /home/gstant/general-server-assistant/app/plugins/__init__.py
+fi
+
 python3 main.py
