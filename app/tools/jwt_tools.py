@@ -25,7 +25,7 @@ def generate_jwt(user_info):
                            get_config(APP_CONFIG)['JWT_SECRET_KEY'],
                            algorithm="HS256",
                            headers=headers
-                           ).decode('ascii')
+                           )
     return jwt_token
 
 

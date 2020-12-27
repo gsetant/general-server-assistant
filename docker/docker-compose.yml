@@ -1,6 +1,6 @@
 version: '3'
 services:
-  easy-canvas:
+  gstant:
     image: gstant/general-server-assistant:latest
     container_name: general-server-assistant
     restart: always
