@@ -8,14 +8,13 @@ services:
       - 9999:9999
     volumes:
       - ./config:/home/gstant/general-server-assistant/config/
+      - ./plugins:/home/gstant/general-server-assistant/app/plugins
     depends_on:
       - mongo-db
   mongo-db:
     image: mongo:latest
     container_name: mongo-db
     restart: always
-    ports:
-      - 27017:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: gstant
