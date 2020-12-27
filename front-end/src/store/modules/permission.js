@@ -37,7 +37,9 @@ const actions = {
       let pluginRoutes = []
       getPluginInfos(roles,getLanguage()).then(response => {
           let plugin_infos = response.data
+
           plugin_infos.forEach(plugin_info => {
+           if (plugin_info) {
             let pluginChildren = [
               {
                 path: 'dashboard',
@@ -57,7 +59,7 @@ const actions = {
                 name: 'pluginGitHub_' + plugin_info.name,
                 meta: {title: 'github'}
               },
-            ]
+            ];
 
             if (roles.includes('admin')) {
               pluginChildren.push({
@@ -80,6 +82,7 @@ const actions = {
                 children: pluginChildren
               }
             )
+           }
           })
           accessedRoutes.push({
             path: '/plugin/',

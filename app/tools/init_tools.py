@@ -87,7 +87,7 @@ def init_app():
         init app
     :return:
     """
-    install_app_require()
+    # install_app_require()
     init_database()
     init_data()
     install_plugin_require()

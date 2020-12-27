@@ -45,6 +45,8 @@ def get_plugin_info(plugin_name, lang):
     :param lang: str language for i18n
     :return: dict plugin info
     """
+    if plugin_name == '':
+        return None
     module = import_string('app.plugins.%s.config' % plugin_name)
     plugin_info = module.get_info(lang)
     return plugin_info
