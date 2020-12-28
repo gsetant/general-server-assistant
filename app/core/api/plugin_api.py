@@ -6,6 +6,7 @@ from app.core.model.respond_model import RespondModel
 from app.core.service.plugin_service import get_plugin_infos, get_plugin_info, get_plugin_setting, save_plugin_setting, \
     get_user_plugin_setting, get_all_plugin_info, install_plugin, download_and_install_plugin, delete_plugin_if_exist, \
     get_plugin_version_from_github, install_plugin_version
+from app.tools.init_tools import install_plugin_require
 from app.tools.jwt_tools import decode_jwt
 
 api = Blueprint('plugin_api', __name__)
@@ -107,6 +108,8 @@ def install_new_plugin():
     request_model = RequestModel(request)
     respond_model = RespondModel()
     respond_model.data = install_plugin(request_model.data.get('github'))
+    # install plugin requirements
+    install_plugin_require()
     return respond_model
 
 
@@ -146,4 +149,6 @@ def install_by_version():
     request_model = RequestModel(request)
     respond_model = RespondModel()
     respond_model.data = install_plugin_version(request_model.data.get('github'), request_model.data.get('version'))
+    # install plugin requirements
+    install_plugin_require()
     return respond_model

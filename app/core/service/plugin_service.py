@@ -9,7 +9,6 @@ from lxml import etree
 from werkzeug.utils import import_string, find_modules
 
 from app.tools.db_tools import get_collection
-from app.tools.init_tools import install_plugin_require
 
 
 def get_all_plugin_name():
@@ -175,8 +174,6 @@ def download_and_install_plugin(github_address, branch):
     # remove old and install new
     delete_plugin_if_exist(plugin_name)
     shutil.move("download/%s/%s" % (file_name, plugin_dir), "app/plugins/%s" % plugin_name)
-    # install plugin requirements
-    install_plugin_require()
 
 
 def delete_plugin_if_exist(plugin_name):
