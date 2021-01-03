@@ -9,6 +9,7 @@ export default {
     userManagement: '用户管理',
     adminLog: '系统日志',
     pluginManagement: '插件管理',
+    clusterManagement: '集群管理',
     profile: '个人中心',
     library: '库管理',
     manualSearch: '手动搜索'
@@ -55,6 +56,18 @@ export default {
     finish: '安装完成',
     installing: '插件安装中',
     pleaseSelectVersion: '请选择版本'
+  },
+  clusterAdmin:{
+    add: '添加节点',
+    nodeSetting: '设置',
+    nodeRole: '节点角色',
+    nodeRoleMaster: 'master',
+    nodeRoleMasterAndSlave: 'master&slave',
+    nodeRoleSlave: 'slave',
+    slaveName: '名称',
+    slaveIP: 'IP',
+    slavePort: 'Port',
+    slaveStatus: '状态',
   },
   userManagement: {
     createUser:' 新建用户',

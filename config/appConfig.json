@@ -11,7 +11,7 @@
         "PORT": 27017,
         "DBNAME":"general-server-assistant",
         "USER": "root",
-        "PWD": "gstant"
+        "PWD": "general-server-assistant"
     },
     "?DEBUG": "框架调试",
     "DEBUG": true,
@@ -23,5 +23,6 @@
             "name": "admin",
             "password": "admin",
             "email": ""
-        }
+    },
+    "CLUSTER_TOKEN": "general-server-assistant"
 }

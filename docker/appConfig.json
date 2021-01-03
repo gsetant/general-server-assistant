@@ -23,5 +23,6 @@
             "name": "admin",
             "password": "admin",
             "email": ""
-        }
+        },
+    "CLUSTER_TOKEN": "general-server-assistant"
 }

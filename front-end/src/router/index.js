@@ -141,6 +141,14 @@ export const adminRoutes = [
         meta: {
           title: 'userManagement',
         },
+      },
+      {
+        path: 'cluster/management',
+        name: 'clusterManagement',
+        component: () => import('@/views/admin/clusterManagement'),
+        meta: {
+          title: 'clusterManagement',
+        },
       }]
   }
 ]

@@ -1,6 +1,7 @@
 import os
 import sys
 
+from app.core.service.clusterService import get_node_info, init_node_info
 from app.core.service.plugin_service import get_all_plugin_name
 from app.tools.config_tools import get_config, REQUIREMENTS_CONFIG, APP_CONFIG
 from app.tools.db_tools import get_connection, get_collection
@@ -69,6 +70,15 @@ def init_database():
     return database
 
 
+def init_cluster_info():
+    """
+        init cluster info
+    """
+    node_info = get_node_info()
+    if not node_info:
+        init_node_info()
+
+
 def init_data():
     """
         init data (insert user admin if no exist)
@@ -87,7 +97,7 @@ def init_app():
         init app
     :return:
     """
-    # install_app_require()
     init_database()
     init_data()
     install_plugin_require()
+    init_cluster_info()

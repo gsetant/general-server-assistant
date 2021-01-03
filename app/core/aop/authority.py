@@ -6,6 +6,7 @@ from app.core.model.plugin_respond import PluginRespond
 from app.core.model.request_model import RequestModel
 from app.core.model.respond_model import RespondModel
 from app.core.service import user_service
+from app.core.service.clusterService import validate_master
 from app.core.service.plugin_service import get_all_plugin_name
 from app.tools.jwt_tools import renew_jwt, verify_jwt, decode_jwt
 
@@ -103,3 +104,28 @@ def plugin_authorization(plugin_name):
         return True
     else:
         return False
+
+
+def cluster_authentication(api_function):
+    """
+        check cluster authentication
+        if not login return code 401
+    :param api_function:
+    :return: dump json from respond_model
+    """
+
+    @wraps(api_function)
+    def fun_dec(*args, **kwargs):
+        request_model = RequestModel(request)
+        if validate_master(request_model.data.get("token")):
+            respond_model = api_function(*args, **kwargs)
+            respond_model.code = 20000
+            respond_model.message = 'success'
+            return respond_model.dump_json(), 200
+
+        else:
+            respond_model = RespondModel()
+            respond_model.message = 'authorization error'
+            respond_model.code = 50012
+            return respond_model.dump_json(), 403
+    return fun_dec

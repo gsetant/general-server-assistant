@@ -9,6 +9,7 @@ export default {
     userManagement: 'user management',
     adminLog: 'system log',
     pluginManagement: 'plugin management',
+    clusterManagement: 'cluster management',
     profile: 'Profile',
     library: 'library setting',
     manualSearch: 'manual search'
@@ -55,7 +56,18 @@ export default {
     installing: 'plugin installing',
     pleaseSelectVersion: 'please select version',
     actor: 'actor'
-
+  },
+  clusterAdmin:{
+    add: 'add node',
+    nodeSetting: 'setting',
+    nodeRole: 'node role',
+    nodeRoleMaster: 'master',
+    nodeRoleMasterAndSlave: 'master&slave',
+    nodeRoleSlave: 'slave',
+    slaveName: 'Name',
+    slaveIP: 'IP',
+    slavePort: 'Port',
+    slaveStatus: 'Status',
   },
   userManagement: {
     createUser:' create user',
