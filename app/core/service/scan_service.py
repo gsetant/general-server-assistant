@@ -1,5 +1,6 @@
 from werkzeug.utils import import_string
 
+from app.core.service.clusterService import get_node_info, run_master_scan, run_master_slave_scan
 from app.core.service.libraries_service import libraries_detail
 from app.core.service.plugin_service import get_user_plugin_setting
 from app.core.service.user_service import get_user_by_token
@@ -19,19 +20,23 @@ def run_scan(data):
             user_setting = get_user_plugin_setting(plugin_config.get_info('en').get('name'),
                                                    {'name': user_info.get('name')})
             meta_data_list = []
+
             try:
-                meta_data = plugin_model.search(data, user_setting)
-                meta_data = trans_to_dict(meta_data)
-                # set cache
-                for item in meta_data:
-                    cache_item = check_item_exist(item, plugin_config.get_info('en').get('name'))
-                    if cache_item:
-                        meta_data_list.append(cache_item)
-                    else:
-                        cache_id = set_cache(
-                            item["code"], item, plugin_config.get_info('en').get('name'))
-                        item['cache_id'] = cache_id
-                        meta_data_list.append(item)
+                # choice search method by node status
+                node_status = get_node_info()
+                # master role
+                if node_status.get('role') == 'master':
+                    meta_data_list = run_master_scan(plugin, user_setting, data)
+
+                # master&slave role
+                if node_status.get('role') == 'master&slave':
+                    meta_data_list = run_master_slave_scan(plugin, user_setting, data)
+
+                # slave roles
+                if node_status.get('role') == 'slave':
+                    meta_data_list = trans_to_dict(plugin_model.search(data, user_setting))
+
+                meta_data_list = set_or_get_cache_id(meta_data_list, plugin_config.get_info('en').get('name'))
             except Exception as ex:
                 log('error', repr(ex), plugin)
 
@@ -41,6 +46,26 @@ def run_scan(data):
                 return result
 
     return result
+
+
+def set_or_get_cache_id(meta_data, plugin_name):
+    """
+        set or get meta data from db cache
+    : param meta_data: meta data list
+    : param plugin_name: plugin name
+    :return: meta_data_list with cache id
+    """
+    meta_data_list = []
+    for item in meta_data:
+        cache_item = check_item_exist(item, plugin_name)
+        if cache_item:
+            meta_data_list.append(cache_item)
+        else:
+            cache_id = set_cache(
+                item["code"], item, plugin_name)
+            item['cache_id'] = cache_id
+            meta_data_list.append(item)
+    return meta_data_list
 
 
 def run_manual_scan(data, user_info):
@@ -57,6 +82,18 @@ def run_manual_scan(data, user_info):
     result.extend(trans_to_dict(meta_data))
     # save_pic_to_db(result)
     return result
+
+
+def run_scan_from_master(plugin_name, user_setting, request_data):
+    """
+        run scan task assigned by master node
+    : param plugin_name: plugin name
+    : param user_setting: user setting
+    : request_data: request query from Media server
+    :return: meta_data_list
+    """
+    plugin_model = import_string('app.plugins.%s.main' % plugin_name)
+    return trans_to_dict(plugin_model.search(request_data, user_setting))
 
 
 def trans_to_dict(object_list):
