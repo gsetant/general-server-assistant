@@ -1,3 +1,6 @@
+from app.core.model.Album import Album
+from app.core.model.Artist import Artist
+
 
 class MetaData:
 
@@ -7,7 +10,7 @@ class MetaData:
     """
        model Meta data
     """
-
+    code: ''
     title: ''
     original_title: ''
     summary: ''
@@ -23,12 +26,19 @@ class MetaData:
     thumbnail: ''
     cache_id: ''
     """
-        #base64 encoded
-        actor : { 'actor name': 'picture' }
+            #base64 encoded
+            actor : { 'actor name': 'picture' }
+        """
+    actor: None
+
     """
-    actor: {}
+        music
+    """
+    artist: []
+    album: {}
 
     def __init__(self):
+        self.code = ''
         self.title = ''
         self.original_title = ''
         self.summary = ''
@@ -42,7 +52,14 @@ class MetaData:
         self.thumbnail = ''
         self.actor = {}
         self.cache_id = ''
+        self.artist = []
+        self.album = Album()
 
     def get_dic(self):
+        self.album = self.album.get_dic()
+        artist_dict = []
+        for artist_obj in self.artist:
+            artist_dict.append(artist_obj.get_dic())
+        self.artist = artist_dict
         return self.__dict__
 

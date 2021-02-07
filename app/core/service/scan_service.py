@@ -1,3 +1,5 @@
+import urllib
+
 from werkzeug.utils import import_string
 
 from app.core.service.clusterService import get_node_info, run_master_scan, run_master_slave_scan
@@ -128,6 +130,22 @@ def save_pic_to_db(meta_data_list):
                 url = quote(url)
                 meta_actor.update({k: pic_base_url + url})
             meta_data.update({'actor': meta_actor})
+
+        # music
+        if meta_data.get('album'):
+            album = meta_data.get('album')
+            if album.get('poster') and album.get('poster') is not '':
+                url = "album-poster/%s" % cache_id
+                album.update({'poster': pic_base_url + url})
+        if meta_data.get('artist'):
+            artists = meta_data.get('artist')
+            for artist in artists:
+                if artist.get('poster') and artist.get('poster') is not '':
+                    url = "artist-%s-poster/%s" % (urllib.parse.quote(artist.get('title')), cache_id)
+                    artist.update({'poster': pic_base_url + url})
+                if artist.get('art') and artist.get('art') is not '':
+                    url = "artist-%s-artpic/%s" % (urllib.parse.quote(artist.get('title')), cache_id)
+                    artist.update({'poster': pic_base_url + url})
     return meta_data_list
 
 
@@ -144,5 +162,23 @@ def get_pic(pic_type, cache_id):
         return meta_data.get('poster')
     if pic_type == 'thumbnail':
         return meta_data.get('thumbnail')
+    if 'album' in pic_type:
+        if 'poster' in pic_type:
+            return meta_data.get('album').get('poster')
+    if 'artist' in pic_type:
+        if 'poster' in pic_type:
+            pic_type = urllib.parse.unquote(pic_type)
+            artist_name = pic_type[7:-7]
+            artists = meta_data.get('artist')
+            for artist in artists:
+                if artist.get('title') == artist_name:
+                    return artist.get('poster')
+        if 'artpic' in pic_type:
+            pic_type = urllib.parse.unquote(pic_type)
+            artist_name = pic_type[7:-7]
+            artists = meta_data.get('artist')
+            for artist in artists:
+                if artist.get('title') == artist_name:
+                    return artist.get('art')
     else:
         return meta_data.get('actor').get(pic_type)

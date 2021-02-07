@@ -1,9 +1,8 @@
 *.pyc
 *.log
 /app/plugins/*
-!/app/plugins/demo/
-/app/plugins/adultscraperx/*
 !/app/plugins/__init__.py
+/download/*
 !/download/__init__.py
 .vscode/*
 _venv/*

@@ -47,7 +47,7 @@ def log(level, message, path=''):
 
 def init_log(logger, path):
     logger.setLevel(logging.INFO)
-    fh = logging.FileHandler(path)
+    fh = logging.FileHandler(filename=path, mode='a', encoding='utf-8')
     formatter = logging.Formatter('%(levelname)s - %(asctime)s - %(name)s - %(message)s')
     fh.setFormatter(formatter)
     logger.addHandler(fh)
