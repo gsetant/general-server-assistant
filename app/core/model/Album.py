@@ -21,6 +21,7 @@ class Album:
     countries: ''
     # base64 encoded
     poster: ''
+    reviews: []
 
     def __init__(self):
         self.genres = ''
@@ -36,6 +37,7 @@ class Album:
         self.countries = ''
         # base64 encoded
         self.poster = ''
+        self.reviews = []
 
     def get_dic(self):
         return self.__dict__
