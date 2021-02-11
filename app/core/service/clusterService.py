@@ -17,7 +17,7 @@ def get_node_info():
     node_info = collection.find_one({})
     if node_info:
         node_info.pop('_id')
-    check_node_slave_status(node_info)
+        check_node_slave_status(node_info)
     return node_info
 
 
