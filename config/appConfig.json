@@ -24,5 +24,6 @@
             "password": "admin",
             "email": ""
     },
-    "CLUSTER_TOKEN": "general-server-assistant"
+    "CLUSTER_TOKEN": "general-server-assistant",
+    "ENABLE_SIGN_UP": false
 }

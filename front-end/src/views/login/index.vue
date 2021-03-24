@@ -45,17 +45,61 @@
       </el-form-item>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+      <el-button v-if="enable_sign_up" :loading="loading" style="width:100%;margin-bottom:30px;margin-left:0" @click.native.prevent="openSignUp">sign up</el-button>
 
       <div class="tips">
       </div>
 
+      <el-dialog :visible.sync="signUpDialog" title="Sign up" width="80%" class="signUpDialog">
+      <el-form :model="signUpUser">
+        <el-form-item prop="username">
+          <el-input
+            ref="username"
+            v-model="signUpUser.username"
+            auto-complete="on"
+            name="username"
+            placeholder="Username"
+            tabindex="1"
+            type="text"
+          />
+        </el-form-item>
+        <el-form-item prop="Email">
+          <el-input
+            ref="Email"
+            v-model="signUpUser.email"
+            auto-complete="on"
+            name="email"
+            placeholder="Email"
+            tabindex="1"
+            type="email"
+          />
+        </el-form-item>
+        <el-form-item prop="password">
+          <span class="svg-container">
+            <svg-icon icon-class="password" />
+          </span>
+          <el-input
+            ref="password"
+            v-model="signUpUser.password"
+            auto-complete="on"
+            name="password"
+            placeholder="password"
+            tabindex="2"
+            :type="passwordType"
+          />
+        </el-form-item>
+        <el-button :loading="loading" style="width:100%;margin-bottom:30px;" type="primary" @click.native.prevent="handleSignUp">Sign Up</el-button>
+
+      </el-form>
+    </el-dialog>
     </el-form>
   </div>
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
+import {getLanguage} from "@/lang";
+import {checkEnableCheckUp, signUp} from "@/api/user";
 
 export default {
   name: 'Login',
@@ -84,9 +128,12 @@ export default {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
+      signUpUser: {},
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      redirect: undefined,
+      signUpDialog: false,
+      enable_sign_up: false,
     }
   },
   watch: {
@@ -97,6 +144,19 @@ export default {
       immediate: true
     }
   },
+  mounted() {
+      new Promise((resolve, reject) => {
+        checkEnableCheckUp(this.pluginName, getLanguage()).then(response => {
+          this.pluginSetting= response.data.form
+          if (response.data.enable_sign_up){
+            this.enable_sign_up= response.data.enable_sign_up
+          }
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
@@ -122,6 +182,26 @@ export default {
           console.log('error submit!!')
           return false
         }
+      })
+    },
+    openSignUp() {
+      this.signUpDialog = true
+    },
+    handleSignUp() {
+      return new Promise((resolve, reject) => {
+        signUp({ user_info: { name: this.signUpUser.username.trim(), password: this.signUpUser.password, email: this.signUpUser.email }}).then(response => {
+          // eslint-disable-next-line no-unused-vars
+          // setToken(data.token)
+          if (response.data) {
+            this.$message('sign up success')
+            this.signUpDialog = false
+          } else {
+            this.$message('username already used')
+          }
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
       })
     }
   }

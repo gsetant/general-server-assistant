@@ -43,3 +43,25 @@ export function getAllUserInfo() {
     method: 'get'
   })
 }
+
+export function signUp(data) {
+  return request({
+    url: '/signup',
+    method: 'post',
+    data
+  })
+}
+
+export function delUser(username) {
+  return request({
+    url: '/user/del/' + username,
+    method: 'post'
+  })
+}
+
+export function checkEnableCheckUp() {
+  return request({
+    url: '/check/signup',
+    method: 'get'
+  })
+}

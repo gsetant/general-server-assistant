@@ -90,3 +90,14 @@ def del_libraries_settings(user_name, settings):
         'user_name': user_name
     }
     collection.delete_one(query)
+
+
+def del_libraries_setting_by_username(name):
+    """
+        del setting by username
+    :param name username
+    :return:
+    """
+    collection = get_collection("user_libraries")
+    collection.delete_many({"user_name": name})
+    return True

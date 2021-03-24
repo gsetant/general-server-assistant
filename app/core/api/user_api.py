@@ -4,9 +4,12 @@ from app.core.aop.authority import authentication, authorization
 from app.core.model.request_model import RequestModel
 from app.core.model.respond_model import RespondModel
 from app.core.service import user_service
-from app.core.service.user_service import generate_token, update_password, get_all_user_info, get_password_from_db
+from app.core.service.libraries_service import del_libraries_setting_by_username
+from app.core.service.user_service import generate_token, update_password, get_all_user_info, get_password_from_db, \
+    del_user_by_username
+from app.tools.config_tools import APP_CONFIG, get_config
 from app.tools.jwt_tools import generate_jwt, decode_jwt
-from app.core.service.plugin_service import get_all_plugin_name
+from app.core.service.plugin_service import get_all_plugin_name, del_plugin_setting_by_username
 
 api = Blueprint('user_api', __name__)
 
@@ -26,6 +29,33 @@ def login():
         respond_model.code = 20000
     else:
         respond_model.message = 'username or password wrong!'
+    return respond_model.dump_json()
+
+
+@api.route('/check/signup', methods= ['get'])
+def check_enable_sign_up():
+    """
+        check if the server enable user sign up
+    : return: respond model with boolean
+    """
+    enable_sign_up = get_config(APP_CONFIG)['ENABLE_SIGN_UP']
+    respond_model = RespondModel()
+    respond_model.data = {"enable_sign_up": enable_sign_up}
+    respond_model.message = 'success'
+    respond_model.code = 20000
+    return respond_model.dump_json(), 200
+
+
+@api.route('/signup', methods=['post'])
+def sign_up():
+    """
+        user sign up
+    :return:
+    """
+    request_model = RequestModel(request)
+    respond_model = RespondModel()
+    respond_model.data = user_service.user_sign_up(request_model.data.get('user_info'))
+    respond_model.code = 20000
     return respond_model.dump_json()
 
 
@@ -49,7 +79,7 @@ def user():
         else:
             save_user_info = update_password(user_info_form)
         respond_model.message = 'success'
-        if save_user_info:
+        if save_user_info and user_info_form['name'] == user_info_jwt['name']:
             respond_model.token = generate_jwt(user_info_form)
         return respond_model
     respond_model.message = 'error'
@@ -115,4 +145,18 @@ def install_by_version():
     """
     respond_model = RespondModel()
     respond_model.data = get_all_user_info()
+    return respond_model
+
+
+@api.route('/user/del/<username>', methods=['post'])
+@authorization('admin')
+def del_user(username):
+    """
+        del user
+    :return:
+    """
+    respond_model = RespondModel()
+    respond_model.data = del_user_by_username(username)
+    del_libraries_setting_by_username(username)
+    del_plugin_setting_by_username(username)
     return respond_model

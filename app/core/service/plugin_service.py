@@ -203,3 +203,14 @@ def get_plugin_version_from_github(github_address):
     tag_list.append('master')
     return tag_list
 
+
+def del_plugin_setting_by_username(name):
+    """
+        del setting by username
+    :param name username
+    :return:
+    """
+    collection = get_collection("plugin_setting")
+    collection.delete_one({"name": name})
+    return True
+

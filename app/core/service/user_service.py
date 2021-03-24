@@ -1,5 +1,6 @@
 from secrets import token_urlsafe
 
+from app.core.service.plugin_service import get_all_plugin_name
 from app.tools.db_tools import get_collection
 from app.tools.log_tools import log
 from app.tools.sha1_tools import sha1_encode
@@ -17,6 +18,26 @@ def login(user_info):
         log('info', 'user login: %s' % user_info.get('name'))
         return user_info
     return None
+
+
+def user_sign_up(user_info):
+    """
+        user sign up
+    :param user_info: dict user info
+    :return:
+    """
+    collection = get_collection("user")
+    if collection.find_one({'name': user_info.get('name')}):
+        return False
+    collection.insert(
+        {
+            'name': user_info.get('name'),
+            'password': get_password(user_info.get('name'), user_info.get('password')),
+            'email': user_info.get('email'),
+            'roles': get_all_plugin_name()
+        }
+    )
+    return True
 
 
 def get_user(name, password):
@@ -78,7 +99,10 @@ def update_password(user_info):
     if user_info.get('password') and user_info.get('password') != '':
         user_info['password'] = get_password(user_info['name'], user_info['password'])
     log('info', 'password saved')
-    return update(user_info)
+    update_states = update(user_info)
+    if '_id' in user_info:
+        user_info.pop("_id")
+    return update_states
 
 
 def get_password(user_name, password):
@@ -107,3 +131,14 @@ def get_all_user_info():
         user_info.pop('_id')
         user_info.pop('password')
     return user_infos
+
+
+def del_user_by_username(name):
+    """
+        del user by username
+    :param name username
+    :return:
+    """
+    collection = get_collection("user")
+    collection.delete_one({"name": name})
+    return True

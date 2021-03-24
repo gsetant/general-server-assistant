@@ -1,4 +1,10 @@
 export default {
+  intro:{
+    summary:"The Gsetant project aims to provide a set of general enhancements for the current popular media servers (Plex, Emby, Jellyfin), using APIs and plug-ins to inherit from the media server and provide functional extensions.\n" +
+      "Gsetant has a complete set of API and architecture and supports the integration of more functions into the Gsetant platform through plug-ins. The detailed plug-in list can be found in other projects in the organization\n" +
+      "No service plug-ins are installed by default in the Gsetant platform initially installed. Users need to install them on demand. Gsetant provides a one-click installation function. Please refer to the specific plug-in instructions.\n" +
+      "Gsetant's Plex support plugin address is: https://github.com/gsetant/Gsetant.bundl"
+  },
   route: {
     dashboard: 'Dashboard',
     plugin: 'plugin',
