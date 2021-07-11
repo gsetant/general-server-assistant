@@ -3,7 +3,21 @@ export default {
     summary:"Gsetant 项目旨在为当前流行的媒体服务器(Plex, Emby, Jellyfin)提供一套通用的增强功能集合，使用API和插件等多种方式为与媒体服务器继承，并提供功能扩展。\n" +
       "Gsetant 有一套完整的API与架构并支持通过插件的形式集成更多功能到Gsetant平台。详细插件列表可查阅organization中的其他项目 \n" +
       "初始安装的Gsetant平台中不默认安装任何服务插件，需要用户自行按需安装，Gsetant提供了一键安装功能，请参阅具体插件说明 \n" +
-      "Gsetant 的Plex支持插件地址为: https://github.com/gsetant/Gsetant.bundl"
+      "Gsetant 的Plex支持插件地址为: https://github.com/gsetant/Gsetant.bundle"
+  },
+   guide: {
+    hplugin: '插件安装',
+    plugin: '为了使用gsetant您需要为您的媒体服务器安装插件' +
+      '\nPlex(https://github.com/gsetant/Gsetant.bundle)' +
+      '\nEmby(release soon)' +
+      '\nJellyfin(release soon)',
+     hprofile: '插件设置',
+     profile: '您需要为您的插件生成插件密函（plugin token），可从gsetant的个人中心中生成' +
+      '复制插件密函到您的插件设置中',
+     hlibraries: '库设置',
+    libraries: '进入gsetant的库管理界面设置为媒体服务器中的资料库设置匹配规则\n' +
+      '下图为例子为使用网易云音乐插件为music库提供元数据搜刮 \n' +
+      '您也可以同时为一个库开启多个插件，并更改开启插件的顺序',
   },
   route: {
     dashboard: '首页',
@@ -18,7 +32,8 @@ export default {
     clusterManagement: '集群管理',
     profile: '个人中心',
     library: '库管理',
-    manualSearch: '手动搜索'
+    manualSearch: '手动搜索',
+    guide: '使用说明'
   },
   button:{
     save: '保存',
@@ -118,10 +133,6 @@ export default {
     delete: '删除',
     confirm: '确定',
     cancel: '取消'
-  },
-  guide: {
-    description: '引导页对于一些第一次进入项目的人很有用，你可以简单介绍下项目的功能。本 Demo 是基于',
-    button: '打开引导'
   },
   components: {
     documentation: '文档',

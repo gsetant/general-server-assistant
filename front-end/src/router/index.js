@@ -59,6 +59,31 @@ export const constantRoutes = [
     }]
   },
   {
+    path: '/guide',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [{
+      path: 'guide',
+      name: 'guide',
+      component: () => import('@/views/guide/guide'),
+      meta: {title: 'guide', icon: 'guide'}
+    }]
+  },
+  {
+    path: '/profile',
+    component: Layout,
+    redirect: '/profile/index',
+    hidden: false,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/profile/index'),
+        name: 'Profile',
+        meta: {title: 'profile', icon: 'user', noCache: true}
+      }
+    ]
+  },
+  {
     path: '/manualSearch',
     component: Layout,
     redirect: '/manualSearch',
@@ -68,20 +93,6 @@ export const constantRoutes = [
       component: () => import('@/views/manualSearch/index'),
       meta: {title: 'manualSearch', icon: 'form'}
     }]
-  },
-  {
-    path: '/profile',
-    component: Layout,
-    redirect: '/profile/index',
-    hidden: true,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/profile/index'),
-        name: 'Profile',
-        meta: {title: 'profile', icon: 'user', noCache: true}
-      }
-    ]
   },
   {
     path: '/library',

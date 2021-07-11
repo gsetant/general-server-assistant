@@ -100,6 +100,8 @@ def plugin_authorization(plugin_name):
     roles = decode_jwt(request_model.token)['user_info'].get('roles')
     if 'admin' in roles:
         roles = 'admin,' + get_all_plugin_name()
+    if 'poweruser' in roles:
+        roles = get_all_plugin_name()
     if plugin_name in roles:
         return True
     else:

@@ -3,7 +3,21 @@ export default {
     summary:"The Gsetant project aims to provide a set of general enhancements for the current popular media servers (Plex, Emby, Jellyfin), using APIs and plug-ins to inherit from the media server and provide functional extensions.\n" +
       "Gsetant has a complete set of API and architecture and supports the integration of more functions into the Gsetant platform through plug-ins. The detailed plug-in list can be found in other projects in the organization\n" +
       "No service plug-ins are installed by default in the Gsetant platform initially installed. Users need to install them on demand. Gsetant provides a one-click installation function. Please refer to the specific plug-in instructions.\n" +
-      "Gsetant's Plex support plugin address is: https://github.com/gsetant/Gsetant.bundl"
+      "Gsetant's Plex support plugin address is: https://github.com/gsetant/Gsetant.bundle"
+  },
+  guide: {
+    hplugin: 'Install plugin',
+    plugin: 'To use gsetant you need to install plugins into your media server' +
+      '\nPlex(https://github.com/gsetant/Gsetant.bundle)' +
+      '\nEmby(release soon)' +
+      '\nJellyfin(release soon)',
+    hprofile: 'Set up plugin',
+    profile: 'To set up the plugin you need to go the the profile page of gsetant and generate a plugin token. ' +
+      'Copy the token into the setting of your plugin',
+    hlibraries: 'Set up libraries',
+    libraries: 'Go to the library setting of gsetant and setup the agents for each libraries. \n' +
+      'Following picture shows an example of using NeteaseCloudMusic as the agent for library Music to provide meta data. \n' +
+      'You could also enable multi agents for one library and change the order of the enabled agents.',
   },
   route: {
     dashboard: 'Dashboard',
@@ -18,7 +32,8 @@ export default {
     clusterManagement: 'cluster management',
     profile: 'Profile',
     library: 'library setting',
-    manualSearch: 'manual search'
+    manualSearch: 'manual search',
+    guide: 'guide'
   },
   button:{
     save: 'save',
@@ -118,10 +133,6 @@ export default {
     delete: 'Delete',
     confirm: 'Confirm',
     cancel: 'Cancel'
-  },
-  guide: {
-    description: 'The guide page is useful for some people who entered the project for the first time. You can briefly introduce the features of the project. Demo is based on ',
-    button: 'Show Guide'
   },
   components: {
     documentation: 'Documentation',

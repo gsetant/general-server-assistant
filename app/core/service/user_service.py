@@ -34,7 +34,7 @@ def user_sign_up(user_info):
             'name': user_info.get('name'),
             'password': get_password(user_info.get('name'), user_info.get('password')),
             'email': user_info.get('email'),
-            'roles': get_all_plugin_name()
+            'roles': 'poweruser'
         }
     )
     return True

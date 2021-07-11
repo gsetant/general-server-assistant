@@ -99,7 +99,9 @@ def user_info():
     respond_model = RespondModel()
     respond_model.message = 'success'
     if 'admin' in user_info_jwt.get('roles'):
-        user_info_jwt['roles'] = 'admin,' + get_all_plugin_name()
+        user_info_jwt['roles'] = 'admin, poweruser,' + get_all_plugin_name()
+    elif 'poweruser' in user_info_jwt.get('roles'):
+        user_info_jwt['roles'] = 'poweruser,' + get_all_plugin_name()
     respond_model.data = user_info_jwt
     return respond_model
 

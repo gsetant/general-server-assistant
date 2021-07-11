@@ -26,7 +26,7 @@
               {{ $t('navbar.dashboard') }}
             </el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://github.com/gsetant/general-server-assistanty">
+          <a target="_blank" href="https://github.com/gsetant/general-server-assistant">
             <el-dropdown-item>
               {{ $t('navbar.github') }}
             </el-dropdown-item>
