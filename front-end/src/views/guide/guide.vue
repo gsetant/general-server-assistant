@@ -4,6 +4,7 @@
   <pre>{{$t('guide.plugin')}}</pre>
   <h3>{{$t('guide.hprofile')}}</h3>
   <pre>{{$t('guide.profile')}}</pre>
+  <img style="width: 30%" src="@/assets/guide/img.png"/>
   <h3>{{$t('guide.hlibraries')}}</h3>
   <pre>{{$t('guide.libraries')}}</pre>
   <img style="width: 50%" src="@/assets/guide/librariesexp.png">

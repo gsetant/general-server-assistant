@@ -1,19 +1,17 @@
 export default {
   intro:{
-    summary:"Gsetant 项目旨在为当前流行的媒体服务器(Plex, Emby, Jellyfin)提供一套通用的增强功能集合，使用API和插件等多种方式为与媒体服务器继承，并提供功能扩展。\n" +
-      "Gsetant 有一套完整的API与架构并支持通过插件的形式集成更多功能到Gsetant平台。详细插件列表可查阅organization中的其他项目 \n" +
-      "初始安装的Gsetant平台中不默认安装任何服务插件，需要用户自行按需安装，Gsetant提供了一键安装功能，请参阅具体插件说明 \n" +
-      "Gsetant 的Plex支持插件地址为: https://github.com/gsetant/Gsetant.bundle"
+    summary:"Gsetant 项目旨在为当前流行的媒体服务器(Plex, Emby, Jellyfin)提供一套通用的增强功能集合，使用API和插件等多种方式为与媒体服务器集成，并提供功能扩展。"
   },
    guide: {
     hplugin: '插件安装',
     plugin: '为了使用gsetant您需要为您的媒体服务器安装插件' +
-      '\nPlex(https://github.com/gsetant/Gsetant.bundle)' +
+      '\nPlex(https://github.com/gsetant/Gsetant.bundle/releases/)' +
       '\nEmby(release soon)' +
       '\nJellyfin(release soon)',
      hprofile: '插件设置',
-     profile: '您需要为您的插件生成插件密函（plugin token），可从gsetant的个人中心中生成' +
-      '复制插件密函到您的插件设置中',
+     profile: '您需要为您的插件生成插件密函（plugin token），可从gsetant的个人中心中生成\n' +
+      '复制插件密函到您的插件设置中\n' +
+      '如果您使用公共Gsetant `https://www.gsetant.xyz` 做为Gsetant API地址，`433`做为Gsetant API port',
      hlibraries: '库设置',
     libraries: '进入gsetant的库管理界面设置为媒体服务器中的资料库设置匹配规则\n' +
       '下图为例子为使用网易云音乐插件为music库提供元数据搜刮 \n' +
@@ -112,7 +110,7 @@ export default {
     size: '布局大小'
   },
   login: {
-    title: '系统登录',
+    title: 'General Server Assistant',
     logIn: '登录',
     username: '账号',
     password: '密码',

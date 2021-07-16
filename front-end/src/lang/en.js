@@ -1,19 +1,18 @@
 export default {
   intro:{
-    summary:"The Gsetant project aims to provide a set of general enhancements for the current popular media servers (Plex, Emby, Jellyfin), using APIs and plug-ins to inherit from the media server and provide functional extensions.\n" +
-      "Gsetant has a complete set of API and architecture and supports the integration of more functions into the Gsetant platform through plug-ins. The detailed plug-in list can be found in other projects in the organization\n" +
-      "No service plug-ins are installed by default in the Gsetant platform initially installed. Users need to install them on demand. Gsetant provides a one-click installation function. Please refer to the specific plug-in instructions.\n" +
-      "Gsetant's Plex support plugin address is: https://github.com/gsetant/Gsetant.bundle"
+    summary:"The Gsetant project aims to provide a set of general enhancements for the current popular media servers (Plex, Emby, Jellyfin)," +
+      " using APIs and plug-ins to inherit from the media server and provide functional extensions."
   },
   guide: {
     hplugin: 'Install plugin',
     plugin: 'To use gsetant you need to install plugins into your media server' +
-      '\nPlex(https://github.com/gsetant/Gsetant.bundle)' +
+      '\nPlex(https://github.com/gsetant/Gsetant.bundle/releases/)' +
       '\nEmby(release soon)' +
       '\nJellyfin(release soon)',
     hprofile: 'Set up plugin',
-    profile: 'To set up the plugin you need to go the the profile page of gsetant and generate a plugin token. ' +
-      'Copy the token into the setting of your plugin',
+    profile: 'To set up the plugin you need to go the the profile page of gsetant and generate a plugin token. \n' +
+            'Copy the token into the setting of your plugin\n' +
+            'If you use the public Gsetant use `https://www.gsetant.xyz` as Gsetant API address, `433` as Gsetant API port',
     hlibraries: 'Set up libraries',
     libraries: 'Go to the library setting of gsetant and setup the agents for each libraries. \n' +
       'Following picture shows an example of using NeteaseCloudMusic as the agent for library Music to provide meta data. \n' +
@@ -112,7 +111,7 @@ export default {
     size: 'Global Size'
   },
   login: {
-    title: 'Login Form',
+    title: 'General Server Assistant',
     logIn: 'Login',
     username: 'Username',
     password: 'Password',
