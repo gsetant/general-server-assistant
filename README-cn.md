@@ -1,6 +1,6 @@
 # general-server-assistant
 
-#### [English](blob/master/README.md) [简体中文](blob/master/README-cn.md)
+#### [English](README.md) [简体中文](README-cn.md)
 #### Gsetant 项目旨在为当前流行的媒体服务器(Plex, Emby, Jellyfin)提供一套通用的增强功能集合，使用API和插件等多种方式为与媒体服务器集成，并提供功能扩展。
 
 #### Gsetant 有一套完整的API与架构并支持通过插件的形式集成更多功能到Gsetant平台。详细插件列表可查阅organization中的其他项目

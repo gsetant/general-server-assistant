@@ -1,6 +1,6 @@
 # general-server-assistant
 
-#### [English]() [简体中文]()
+#### [English](README.md) [简体中文](README-cn.md)
 
 #### The Gsetant project aims to provide a set of enhancements features for the current popular media servers (Plex, Emby, Jellyfin), using APIs and plug-ins to integrate with the media server and provide functional extensions.
 
