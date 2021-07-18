@@ -1,5 +1,6 @@
 import logging
 import os
+import traceback
 
 loggers = {}
 
@@ -28,18 +29,20 @@ def log(level, message, path=''):
             filepath = "log/general.log"
             init_log(loggers['general'], filepath)
         logger = loggers.get('general')
-
+    message = message.encode('utf-8')
     if level == 'info':
         logger.info(message)
 
     if level == 'error':
         logger.error(message)
+        logger.error(str(traceback.format_exc().encode('utf-8')).replace('\\n', '\n'))
 
     if level == 'debug':
         logger.debug(message)
 
     if level == 'exception':
         logger.exception(message)
+        logger.exception(str(traceback.format_exc().encode('utf-8')).replace('\\n', '\n'))
 
     if level == 'critical':
         logger.critical(message)
