@@ -18,10 +18,6 @@
         :label="$t('pluginAdmin.version')">
       </el-table-column>
       <el-table-column
-        prop="content"
-        :label="$t('pluginAdmin.content')">
-      </el-table-column>
-      <el-table-column
         prop="github"
         label="Github">
       </el-table-column>
