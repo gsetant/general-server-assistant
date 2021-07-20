@@ -13,7 +13,7 @@
 #### The community host a public Gsetant server. You can register and use the public Gsetant provided by the community by visiting https://www.gsetant.xyz
 #### However, you still need to install the plugin of Gsetant to you media server ([Plex](https://github.com/gsetant/Gsetant.bundle), [Emby(release soon)](), [Jellyfin(release soon)]())
 #### If you like Gsetant, please star this project
-
+#### [Join our Telegram group to ask any questions](https://t.me/AdultScraperX) 
 ### Self-deployment
 
 #### Gsetant recommends using docker for deployment. For deployment details, please refer to the following [Address](https://github.com/gsetant/general-server-assistant/tree/master/docker)

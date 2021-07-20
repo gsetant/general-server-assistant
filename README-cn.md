@@ -12,6 +12,7 @@
 #### 开源社区建立了一个共享的Gsetant服务端，可通过访问 https://www.gsetant.xyz 注册并使用社区提供的公共Gsetant
 #### 但是，您仍需要安装Gsetant的插件到您的媒体服务器中([Plex](https://github.com/gsetant/Gsetant.bundle), [Emby(release soon)](), [Jellyfin(release soon)]())
 #### 如果您喜欢Gsetant，请为本项目添加星标
+#### [欢迎加入Telegram 群组分享讨论关于Gsetant的任何问题](https://t.me/AdultScraperX)
 
 ### 自行部署
 
