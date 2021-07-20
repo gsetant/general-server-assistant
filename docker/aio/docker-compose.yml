@@ -1,14 +1,14 @@
 version: '3'
 services:
   gstant:
-    image: gstant/general-server-assistant:latest
+    image: gstant/general-server-assistant:aio
     container_name: general-server-assistant
     restart: always
     ports:
       - 9999:9999
+      - 3000:3000
     volumes:
       - ./config:/home/gstant/general-server-assistant/config/
-      - ./plugins:/home/gstant/general-server-assistant/app/plugins
     depends_on:
       - mongo-db
   mongo-db:
