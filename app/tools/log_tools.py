@@ -29,7 +29,7 @@ def log(level, message, path=''):
             filepath = "log/general.log"
             init_log(loggers['general'], filepath)
         logger = loggers.get('general')
-    message = str(message).encode('utf-8')
+    # message = str(message).encode('utf-8')
     if level == 'info':
         logger.info(message)
 

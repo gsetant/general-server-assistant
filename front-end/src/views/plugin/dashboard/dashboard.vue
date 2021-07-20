@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <el-container style="width: 100%;height: auto">
 
       <el-header style="width: 100%">
@@ -17,7 +16,7 @@
       </el-aside>
 
       <el-main style="padding-left: 20px">
-        <p class="content">{{pluginInfo.content}}</p>
+        <div class="content" v-html="contentMD"></div>
         <br>
         <p class="version">version:{{pluginInfo.version}}</p>
       </el-main>
@@ -38,13 +37,14 @@
 <script>
   import {getPluginInfo} from "@/api/plugin";
   import {getLanguage} from "@/lang";
-
+  import marked from "marked";
   export default {
     name: "dashboard",
     data(){
       return {
         pluginName: this.$route.path.substring(8,this.$route.path.lastIndexOf('/')),
-        pluginInfo:{}
+        pluginInfo:{},
+        contentMD : ''
       }
     },
     computed: {
@@ -54,6 +54,7 @@
       new Promise((resolve, reject) => {
         getPluginInfo(this.pluginName,getLanguage()).then(response => {
           this.pluginInfo= response.data
+          this.contentMD = marked(this.pluginInfo.content);
           resolve()
         }).catch(error => {
           reject(error)
