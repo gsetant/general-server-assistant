@@ -15,7 +15,7 @@
 #### [欢迎加入Telegram 群组分享讨论关于Gsetant的任何问题](https://t.me/AdultScraperX)
 
 ### 自行部署
-
+ 
 #### Gsetant 推荐使用docker进行部署，部署详情可参阅以下[地址](https://github.com/gsetant/general-server-assistant/tree/master/docker)
 
 #### 初始安装的Gsetant平台中不默认安装任何服务插件，需要用户自行按需安装，Gsetant提供了一键安装功能，请参阅具体插件说
