@@ -1,11 +1,4 @@
-FROM nikolaik/python-nodejs
-
-RUN apt update \
-    && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && apt install -y ./google-chrome-stable_current_amd64.deb
-
-# set display port to avoid crash
-ENV DISPLAY=:99
+FROM gstant/base
 
 RUN useradd -ms /bin/bash gstant
 WORKDIR  /home/gstant
