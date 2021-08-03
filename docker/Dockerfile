@@ -1,7 +1,7 @@
 FROM nikolaik/python-nodejs
 
 RUN apt -y update \ 
-    && apt install snapd \
+    && apt install snapd -y \
     && snap install core \
     && snap install chromium
 # set display port to avoid crash
