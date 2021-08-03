@@ -1,7 +1,9 @@
 FROM nikolaik/python-nodejs
 
 RUN apt -y update \ 
-    && apt install chromium-browser
+    && apt install snapd \
+    && snap install core \
+    && snap install chromium
 # set display port to avoid crash
 ENV DISPLAY=:99
 
