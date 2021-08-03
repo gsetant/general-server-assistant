@@ -18,5 +18,7 @@
  
 #### Gsetant 推荐使用docker进行部署，部署详情可参阅以下[地址](https://github.com/gsetant/general-server-assistant/tree/master/docker)
 
+#### [为群晖提供 Gsetant ](doc/Synology/Readme.md) (感谢Leo提供此教程)
+
 #### 初始安装的Gsetant平台中不默认安装任何服务插件，需要用户自行按需安装，Gsetant提供了一键安装功能，请参阅具体插件说
 
