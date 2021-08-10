@@ -51,6 +51,6 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             sudo -i
-            cd gsetant/
+            cd /root/gsetant
             docker-compose pull
             docker-compose up -d
