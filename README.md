@@ -26,4 +26,4 @@
 | Plugin                                                                            | Description                                              |
 | -----------                                                                       | -----------                                              |
 | [Adultscraperx](https://github.com/gsetant/adultscraperx)                         | A adult content metadata agent                           |
-| [NeteaseCloudMusic]([Adultscraperx](https://github.com/gsetant/adultscraperx) )   | A Netease cloud music metadata agent                     |
+| [NeteaseCloudMusic](https://github.com/gsetant/NeteaseCloudMusic)                 | A Netease cloud music metadata agent                     |
