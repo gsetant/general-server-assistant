@@ -42,15 +42,15 @@ jobs:
           tags: gstant/general-server-assistant:aio
       -
         name: push README to Dockerhub
-          uses: christian-korneck/update-container-description-action@v1
-          env:
-            DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
-            DOCKER_PASS: ${{ secrets.DOCKERHUB_TOKEN }}
-          with:
-            destination_container_repo: gstant/general-server-assistant
-            provider: dockerhub
-            short_description: 'gsetant README'
-            readme_file: 'README.md'
+        uses: christian-korneck/update-container-description-action@v1
+        env:
+          DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_PASS: ${{ secrets.DOCKERHUB_TOKEN }}
+        with:
+          destination_container_repo: gstant/general-server-assistant
+          provider: dockerhub
+          short_description: 'gsetant README'
+          readme_file: 'README.md'
       - 
         name: deploy to gsetant public
         uses: appleboy/ssh-action@master
