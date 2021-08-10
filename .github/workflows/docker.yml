@@ -31,9 +31,9 @@ jobs:
           push: true
           no-cache: true
           tags: gstant/general-server-assistant:latest
-     -
+      -
         name: Build and push aio
-        id: docker_build
+        id: docker_build_aio
         uses: docker/build-push-action@v2
         with:
           context: ./docker/aio
