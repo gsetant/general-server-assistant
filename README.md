@@ -20,3 +20,10 @@
 
 #### [Gsetant for Synology](doc/Synology/Readme.md) (Thanks for Leo to provide this documnet)
 #### The initial installation of Gsetant platform does not install any service plug-ins by default. Users need to install them on demand. Gsetant provides one-click installation function. Please refer to the specific plug-in description.
+
+### Supported Plugin list
+
+| Plugin                                                                            | Description                                              |
+| -----------                                                                       | -----------                                              |
+| [Adultscraperx](https://github.com/gsetant/adultscraperx)                         | A adult content metadata agent                           |
+| [NeteaseCloudMusic]([Adultscraperx](https://github.com/gsetant/adultscraperx) )   | A Netease cloud music metadata agent                     |
