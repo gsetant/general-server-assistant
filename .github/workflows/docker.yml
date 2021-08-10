@@ -18,6 +18,10 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - 
+        name: Checkout
+        uses: actions/checkout@v2
       -
         name: Build and push
         id: docker_build
@@ -27,3 +31,12 @@ jobs:
           push: true
           no-cache: true
           tags: gstant/general-server-assistant:latest
+     -
+        name: Build and push aio
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./docker/aio
+          push: true
+          no-cache: true
+          tags: gstant/general-server-assistant:aio
