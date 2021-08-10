@@ -45,7 +45,7 @@ jobs:
         uses: christian-korneck/update-container-description-action@v1
         env:
           DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKER_PASS: ${{ secrets.DOCKERHUB_TOKEN }}
+          DOCKER_PASS: ${{ secrets.DOCKERHUB_PASS }}
         with:
           destination_container_repo: gstant/general-server-assistant
           provider: dockerhub
