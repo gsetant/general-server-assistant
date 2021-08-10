@@ -50,7 +50,6 @@ jobs:
           port: ${{ secrets.PORT }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            sudo -i
-            cd /root/gsetant
-            docker-compose pull
-            docker-compose up -d
+            cd gsetant
+            sudo docker-compose pull
+            sudo docker-compose up -d
