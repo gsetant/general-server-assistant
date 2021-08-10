@@ -40,3 +40,17 @@ jobs:
           push: true
           no-cache: true
           tags: gstant/general-server-assistant:aio
+      - 
+        name: deploy to gsetant public
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            sudo -i
+            cd gsetant/
+            docker-compose pull
+            docker-compose up -d
