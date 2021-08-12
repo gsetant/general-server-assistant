@@ -7,7 +7,7 @@
 wget https://raw.githubusercontent.com/gsetant/general-server-assistant/master/docker/docker-compose.yml
 `
 
-- If you use arm CPU please download and use this docker-compose.yml file
+- If you use arm CPU please download and use this docker-compose.yml file  
 `
 wget https://raw.githubusercontent.com/gsetant/general-server-assistant/master/docker/arm/docker-compose.yml
 `
