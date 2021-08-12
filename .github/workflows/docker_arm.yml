@@ -1,4 +1,4 @@
-name: ci
+name: docker_arm
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - 'master'
 
 jobs:
-  docker:
+  build_arm:
     runs-on: ubuntu-latest
     steps:
       -
@@ -35,4 +35,20 @@ jobs:
           push: true
           no-cache: true
           tags: gstant/general-server-assistant:arm
-
+  deploy:
+    needs: build_arm
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: deploy to gsetant public
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            cd gsetant
+            sudo docker-compose pull
+            sudo docker-compose up -d

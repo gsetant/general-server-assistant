@@ -1,4 +1,4 @@
-name: ci
+name: docker
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - 'master'
 
 jobs:
-  docker:
+  build:
     runs-on: ubuntu-latest
     steps:
       -
@@ -32,15 +32,6 @@ jobs:
           no-cache: true
           tags: gstant/general-server-assistant:latest
       -
-        name: Build and push aio
-        id: docker_build_aio
-        uses: docker/build-push-action@v2
-        with:
-          context: ./docker/aio
-          push: true
-          no-cache: true
-          tags: gstant/general-server-assistant:aio
-      -
         name: push README to Dockerhub
         uses: christian-korneck/update-container-description-action@v1
         env:
@@ -51,16 +42,28 @@ jobs:
           provider: dockerhub
           short_description: 'gsetant README'
           readme_file: 'README.md'
-      - 
-        name: deploy to gsetant public
-        uses: appleboy/ssh-action@master
+
+  build_aio:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-          script: |
-            cd gsetant
-            sudo docker-compose pull
-            sudo docker-compose up -d
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Build and push aio
+        id: docker_build_aio
+        uses: docker/build-push-action@v2
+        with:
+          context: ./docker/aio
+          push: true
+          no-cache: true
+          tags: gstant/general-server-assistant:aio
