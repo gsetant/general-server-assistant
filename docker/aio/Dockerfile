@@ -20,6 +20,7 @@ RUN npm run build:prod
 WORKDIR /home/gstant/general-server-assistant/app/plugins
 RUN git clone --depth=1 https://github.com/gsetant/adultscraperx
 RUN git clone --depth=1 https://github.com/gsetant/NeteaseCloudMusic
+RUN git clone --depth=1 https://github.com/gsetant/mdtv
 
 WORKDIR /home/gstant/general-server-assistant
 RUN git clone --depth=1 https://github.com/Binaryify/NeteaseCloudMusicApi

@@ -26,5 +26,6 @@
 
 | Plugin                                                                            | Description                                              |
 | -----------                                                                       | -----------                                              |
-| [Adultscraperx](https://github.com/gsetant/adultscraperx)                         | Adult资源搜刮器                                              |
+| [Adultscraperx](https://github.com/gsetant/adultscraperx)                         | Adult资源搜刮器                                            |
 | [NeteaseCloudMusic](https://github.com/gsetant/NeteaseCloudMusic)                 | 网易云音乐搜刮器                                            |
+| [MDTV](https://github.com/gsetant/mdtv)                                           | Model media 搜刮器                                        |
