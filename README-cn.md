@@ -23,9 +23,4 @@
 #### 初始安装的Gsetant平台中不默认安装任何服务插件，需要用户自行按需安装，Gsetant提供了一键安装功能，请参阅具体插件说
 
 ### Supported Plugin list
-
-| Plugin                                                                            | Description                                              |
-| -----------                                                                       | -----------                                              |
-| [Adultscraperx](https://github.com/gsetant/adultscraperx)                         | Adult资源搜刮器                                            |
-| [NeteaseCloudMusic](https://github.com/gsetant/NeteaseCloudMusic)                 | 网易云音乐搜刮器                                            |
-| [MDTV](https://github.com/gsetant/mdtv)                                           | Model media 搜刮器                                        |
+请查看gsetant的其他项目
