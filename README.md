@@ -22,9 +22,4 @@
 #### The initial installation of Gsetant platform does not install any service plug-ins by default. Users need to install them on demand. Gsetant provides one-click installation function. Please refer to the specific plug-in description.
 
 ### Supported Plugin list
-
-| Plugin                                                                            | Description                                              |
-| -----------                                                                       | -----------                                              |
-| [Adultscraperx](https://github.com/gsetant/adultscraperx)                         | A adult content metadata agent                           |
-| [NeteaseCloudMusic](https://github.com/gsetant/NeteaseCloudMusic)                 | A Netease cloud music metadata agent                     |
-| [MDTV](https://github.com/gsetant/mdtv)                                           | A model media metadata agent                             |
+Plese check other project of gsetant
