@@ -1,7 +1,7 @@
 FROM arm64v8/debian
 ENV DEBIAN_FRONTEND=noninteractive 
 RUN apt-get -y update \
-    && apt-get install -y chromium git chromium-driver python3 python3-pip nodejs npm
+    && apt-get install -y chromium git chromium-driver python3 python3-pip nodejs npm python
 
 # set display port to avoid crash
 ENV DISPLAY=:99
