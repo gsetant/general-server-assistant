@@ -2,11 +2,11 @@
   "requirements": [
     {
       "name": "flask",
-      "version": "release"
+      "version": "1.1.2"
     },
     {
       "name": "flask-cors",
-      "version": "release"
+      "version": "3.0.9"
     },
     {
       "name": "pymongo",
