@@ -9,6 +9,14 @@
       "version": "3.0.9"
     },
     {
+      "name": "Jinja2",
+      "version": "3.0.3"
+    },
+    {
+      "name": "itsdangerous",
+      "version": "2.0.1"
+    },
+    {
       "name": "pymongo",
       "version": "3.10.1"
     },
